@@ -31,4 +31,5 @@ dependencies {
 
     //realmを使うため。
     compile 'io.realm:android-adapters:2.0.0'
+    compile 'com.android.support:design:26.+'
 }

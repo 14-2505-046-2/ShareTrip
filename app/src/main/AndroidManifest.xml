@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chai.sharetrip">
 
-    <application>
-        <!-- クラスを実行させるために追加。 -->
+    <!-- クラスを実行させるために追加。 -->
+    <application
         android:name=".ShareTripApplication"
 
         android:allowBackup="true"

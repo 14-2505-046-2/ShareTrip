@@ -1,17 +1,18 @@
 package com.example.chai.sharetrip;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.nifty.cloud.mb.core.NCMB;
 
 import io.realm.Realm;
 
-import com.nifty.cloud.mb.core.NCMB;
-import com.nifty.cloud.mb.core.NCMBException;
-import com.nifty.cloud.mb.core.NCMBObject;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TripListFragment.OnFragmentInteractionListener{
 
     private Realm mRealm;
 
@@ -22,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        //createTestData();
-      
+        createTestData();
+        showTourList();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -87,4 +89,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void showTourList() {
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment fragment = manager.findFragmentByTag("TripListFragment");
+        if (fragment == null) {
+            fragment = new TripListFragment();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.content, fragment, "TripListFragment");
+            transaction.commit();
+        }
+    }
+
+    @Override
+    public void onAddTourSelected() {
+        //新規ツアー追加処理をここに
+    }
 }

@@ -8,8 +8,8 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Route extends RealmObject {
-    //最低限必要なもの
     @PrimaryKey
+    //最低限必要なもの
     public long route_id;
     public long tour_id;
     public boolean flag_area;//場所ならTrueで交通手段ならFalseでお願いします。

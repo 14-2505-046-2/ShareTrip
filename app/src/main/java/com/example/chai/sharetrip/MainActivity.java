@@ -1,7 +1,7 @@
 package com.example.chai.sharetrip;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import java.util.List;
@@ -9,12 +9,18 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+
 
 import com.nifty.cloud.mb.core.NCMB;
 import com.nifty.cloud.mb.core.NCMBException;
 
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements TripListFragment.OnFragmentInteractionListener{
 
     private Realm mRealm;
 
@@ -25,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        //createTestData();
-      
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        createTestData();
+        showTourList();
+
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(),"041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
+
         //テスト用
         //createTestData();
         //検索の利用はこの通り使ってください。ツアータイトルを検索します。全部一致のみ検索できます。allで全てのサーバー上のデータ。MyTourでローカルのみのデータ（testデータはこっち）
@@ -59,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-
                 //Tourデータの作成。tour_idになるnextIdはRouteクラスでも使う。
                 Number maxId = mRealm.where(Tour.class).max("tour_id");
                 long nextId = 0;
@@ -107,9 +112,23 @@ public class MainActivity extends AppCompatActivity {
                 route3.link = "https://www.tokiwafes.com";
                 route3.comment = "常盤祭やってます。";
 
-
             }
         });
     }
 
+    private void showTourList() {
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment fragment = manager.findFragmentByTag("TripListFragment");
+        if (fragment == null) {
+            fragment = new TripListFragment();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.content, fragment, "TripListFragment");
+            transaction.commit();
+        }
+    }
+
+    @Override
+    public void onAddTourSelected() {
+        //新規ツアー追加処理をここに
+    }
 }

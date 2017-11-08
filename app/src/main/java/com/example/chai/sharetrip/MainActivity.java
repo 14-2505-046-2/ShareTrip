@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.nifty.cloud.mb.core.NCMB;
 
@@ -26,8 +25,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         createTestData();
         showTourList();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(),"041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");

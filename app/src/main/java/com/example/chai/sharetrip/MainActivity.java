@@ -6,6 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
+
+import io.realm.RealmResults;
+
 
 import com.nifty.cloud.mb.core.NCMB;
 
@@ -31,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(),"041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
+        //テスト用
+        //createTestData();
+        //RealmResults<Tour> query = mRealm.where(Tour.class).findAll();
+        //Log.d("query_test",query.first().author);
     }
 
     //テストデータの生成用です。
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+
                 //Tourデータの作成。tour_idになるnextIdはRouteクラスでも使う。
                 Number maxId = mRealm.where(Tour.class).max("tour_id");
                 long nextId = 0;
@@ -49,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 tour.start_time = "１０時";
                 tour.total_time = "８時間";
                 tour.upload_date = "２０１８年１１月１日";
+
 
                 //ここからRouteデータの作成
                 //常盤公園
@@ -84,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 route3.flag_area = true;
                 route3.link = "https://www.tokiwafes.com";
                 route3.comment = "常盤祭やってます。";
+
 
             }
         });

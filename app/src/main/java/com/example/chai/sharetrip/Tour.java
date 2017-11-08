@@ -20,4 +20,5 @@ public class Tour extends RealmObject {
     public String author;
     public String comment;
     public byte[] image;
+    public String objectId = "local_data";
 }

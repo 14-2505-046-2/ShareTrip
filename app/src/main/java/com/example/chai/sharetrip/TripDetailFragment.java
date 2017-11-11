@@ -38,7 +38,6 @@ public class TripDetailFragment extends Fragment {
         mRealm.close();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        createTestData();
+        //createTestData();
         showTourList();
 
 
@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         //テスト用
         //createTestData();
         //検索の利用はこの通り使ってください。ツアータイトルを検索します。全部一致のみ検索できます。allで全てのサーバー上のデータ。MyTourでローカルのみのデータ（testデータはこっち）
-        /*
+
         try {
             //下関観光と検索
-            RealmResults result = MyUtils.getAllObjectId("キーワード");
+            RealmResults result = MyUtils.getAllObjectId("all");
             if(result == null || result.size() == 0) {
                 Log.d("realm", "検索結果がありません。");
             } else {
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         }catch (NCMBException e){
             Log.e("NCMB", "error");
         }
-        */
+
 
         //RealmResults<Tour> query = mRealm.where(Tour.class).findAll();
         //Log.d("query_test",query.first().objectId);

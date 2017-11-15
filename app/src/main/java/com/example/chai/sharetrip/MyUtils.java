@@ -130,16 +130,17 @@ public class MyUtils {
     //必要なツアーのtour_idを配列として返す。引数は検索する文字列。
     //"おすすめ"、"マイツアー"をキーワードとしておすすめ、マイツアーのtour_idを返します。
     public static RealmResults<Tour> getAllObjectId(String word) throws NCMBException {
-        if (word == "MyTour") {
+        if (word.equals("MyTour")) {
             Realm realm = Realm.getDefaultInstance();
             RealmQuery results = realm.where(Tour.class).equalTo("objectId", "local_data");
             return results.findAll();
         } else {
             //TestClassを検索するためのNCMBQueryインスタンスを作成
             NCMBQuery<NCMBObject> query = new NCMBQuery<>("Tour");
-            if(word != "all") {
+            if(!word.equals("all")) {
                 //検索キーワード
                 query.whereEqualTo("tour_title", word);
+                Log.d("on_serch", word);
             }
             list = new ArrayList<Long>();
             //データストアからデータを検索

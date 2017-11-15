@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.util.Log;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -40,15 +41,16 @@ public class TripDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceStat) {
         View v = inflater.inflate(R.layout.fragment_trip_detail, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(llm);
-
-        RealmResults<Route> routes = mRealm.where(Route.class).findAll();
+        Log.d("tour_id", DetailActivity.TOUR_ID);
+        RealmResults<Route> routes = mRealm.where(Route.class).equalTo("tour_id", DetailActivity.tour_id).findAll();
+        Log.d("tour_id", String.valueOf(routes.size()));
         RouteRealmAdapter adapter = new RouteRealmAdapter(getActivity(), routes, true);
         recyclerView.setAdapter(adapter);
         return v;

@@ -3,6 +3,7 @@ package com.example.chai.sharetrip;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
@@ -77,9 +79,10 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         holder.uploadDate.setText(tour.upload_date);
         holder.start.setText(tour.start_time);
         holder.total.setText(tour.total_time);
-        if(tour.image != null && tour.image.length != 0) {
-            Bitmap bmp = MyUtils.getImageFromByte(tour.image);
-            holder.photo.setImageBitmap(bmp);
-        }
+
+        Uri uri = Uri.parse(tour.image);
+        Uri.Builder builder = uri.buildUpon();
+        AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
+        task.execute(builder);
     }
 }

@@ -75,17 +75,25 @@ public class MyUtils {
         return bmp;
     }
 
-    /*
     //ルートをrealmに追加する。
-    public static void saveRoute(Realm mRealm, NCMBObject o) {
+    public static void saveRoute(Realm mRealm, NCMBObject o, long tour_id) {
         mRealm.beginTransaction();
         mRealm = Realm.getDefaultInstance();
         Number maxId = mRealm.where(Route.class).max("route_id");
         long nextId = 0;
         if (maxId != null) nextId = maxId.longValue() + 1;
         Route route = mRealm.createObject(Route.class, new Long(nextId));
+        route.flag_area = o.getBoolean("flag_area");
+        route.means = o.getInt("means");
+        route.tour_id = tour_id;
+        route.start_time = o.getString("start_time");
+        route.end_time = o.getString("end_time");
+        route.comment = o.getString("comment");
+        route.link = o.getString("link");
+        route.image = o.getString("image");
+        route.name = o.getString("name");
+        mRealm.commitTransaction();
     }
-    */
 
     //NCMBObjectを引数とし、realmに追加する。
     public static void saveTour(Realm mRealm, NCMBObject o) {
@@ -102,22 +110,21 @@ public class MyUtils {
         tour.total_time = o.getString("total_time");
         tour.upload_date = o.getString("createDate");
         tour.objectId = o.getString("objectId");
+        tour.image = o.getString("image");
         Log.d("test", tour.objectId);
         mRealm.commitTransaction();
 
         //Route
-        /*
         NCMBQuery<NCMBObject> query = new NCMBQuery<>("Route");
         query.whereEqualTo("tour_id", o.getString("objectId"));
         try {
             List<NCMBObject> results = query.find();
             for (int i = 0, n = results.size(); i < n; i++) {
-                saveRoute(mRealm, results.get(i));
+                saveRoute(mRealm, results.get(i), nextId);
             }
         } catch (NCMBException e) {
             Log.e("NCMB_Route", "error");
         }
-        */
     }
 
     //必要なツアーのtour_idを配列として返す。引数は検索する文字列。

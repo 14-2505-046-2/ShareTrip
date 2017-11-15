@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         */
         //強制で詳細画面を表示
         //Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        //startActivity(intent)
+        //startActivity(intent);
     }
 
     //テストデータの生成用です。

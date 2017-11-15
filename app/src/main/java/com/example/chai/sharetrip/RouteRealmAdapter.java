@@ -9,6 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
@@ -27,6 +35,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         protected TextView end_time;
         protected TextView comment;
         protected ImageView photo;
+        protected ImageView icon;
 
         public TripViewHolder(View itemView) {
             super(itemView);
@@ -35,6 +44,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             end_time = (TextView) itemView.findViewById(R.id.end_time);
             comment = (TextView) itemView.findViewById(R.id.comment);
             photo = (ImageView) itemView.findViewById(R.id.photo);
+            icon = (ImageView) itemView.findViewById(R.id.icon);
 
         }
     }
@@ -58,34 +68,36 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         holder.start_time.setText(route.start_time);
         holder.end_time.setText(route.end_time);
         holder.comment.setText(route.comment);
-        /*
-        if(route.image != null && route.image.length != 0) {
-            Bitmap bmp = MyUtils.getImageFromByte(route.image);
-            holder.photo.setImageBitmap(bmp);
+
+        if(route.flag_area) {
+            Uri uri = Uri.parse(route.image);
+            Uri.Builder builder = uri.buildUpon();
+            AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
+            task.execute(builder);
         }
-        */
-        if(route.flag_area == false) {
+        else {
+            holder.photo.setVisibility(View.INVISIBLE);
             switch (route.means) {
                 case 0:
-                    holder.photo.setImageResource(R.drawable.icon_walk);
+                    holder.icon.setImageResource(R.drawable.icon_walk);
                     break;
                 case 1:
-                    holder.photo.setImageResource(R.drawable.icon_bike);
+                    holder.icon.setImageResource(R.drawable.icon_bike);
                     break;
                 case 2:
-                    holder.photo.setImageResource(R.drawable.icon_car);
+                    holder.icon.setImageResource(R.drawable.icon_car);
                     break;
                 case 3:
-                    holder.photo.setImageResource(R.drawable.icon_bus);
+                    holder.icon.setImageResource(R.drawable.icon_bus);
                     break;
                 case 4:
-                    holder.photo.setImageResource(R.drawable.icon_train);
+                    holder.icon.setImageResource(R.drawable.icon_train);
                     break;
                 case 5:
-                    holder.photo.setImageResource(R.drawable.icon_bullet);
+                    holder.icon.setImageResource(R.drawable.icon_bullet);
                     break;
                 case 6:
-                    holder.photo.setImageResource(R.drawable.icon_airplane);
+                    holder.icon.setImageResource(R.drawable.icon_airplane);
                     break;
             }
         }

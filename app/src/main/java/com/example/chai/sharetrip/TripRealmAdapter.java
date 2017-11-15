@@ -74,9 +74,5 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         holder.uploadDate.setText(tour.upload_date);
         holder.start.setText(tour.start_time);
         holder.total.setText(tour.total_time);
-        if(tour.image != null && tour.image.length != 0) {
-            Bitmap bmp = MyUtils.getImageFromByte(tour.image);
-            holder.photo.setImageBitmap(bmp);
-        }
     }
 }

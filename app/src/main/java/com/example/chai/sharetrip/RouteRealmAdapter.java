@@ -68,12 +68,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         holder.start_time.setText(route.start_time);
         holder.end_time.setText(route.end_time);
         holder.comment.setText(route.comment);
-        /*
-        if(route.image != null && route.image.length != 0) {
-            Bitmap bmp = MyUtils.getImageFromByte(route.image);
-            holder.photo.setImageBitmap(bmp);
-        }
-        */
+
         if(route.flag_area) {
             Uri uri = Uri.parse(route.image);
             Uri.Builder builder = uri.buildUpon();

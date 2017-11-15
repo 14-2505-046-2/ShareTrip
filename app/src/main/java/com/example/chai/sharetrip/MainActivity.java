@@ -1,5 +1,6 @@
 package com.example.chai.sharetrip;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v7.widget.Toolbar;
@@ -54,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         }catch (NCMBException e){
             Log.e("NCMB", "error");
         }
-
-
+        //強制で詳細画面を表示
+        //Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        //startActivity(intent);
         //RealmResults<Tour> query = mRealm.where(Tour.class).findAll();
         //Log.d("query_test",query.first().objectId);
     }

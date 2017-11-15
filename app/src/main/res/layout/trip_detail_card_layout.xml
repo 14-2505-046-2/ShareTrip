@@ -30,7 +30,7 @@
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
-                android:id="@+id/spot_name"
+                android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -56,7 +56,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/norimono"
+                android:id="@+id/means"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -68,8 +68,21 @@
                 app:srcCompat="@mipmap/ic_launcher_round" />
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/start_time"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintLeft_toRightOf="@+id/means"
+                android:layout_marginLeft="8dp" />
+
+            <TextView
+                android:id="@+id/end_time"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
@@ -78,7 +91,7 @@
                 android:text="TextView"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/norimono"
+                app:layout_constraintLeft_toRightOf="@+id/start_time"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>

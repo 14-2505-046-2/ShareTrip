@@ -48,8 +48,8 @@ public class TripDetailFragment extends Fragment {
 
         recyclerView.setLayoutManager(llm);
 
-        RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
-        TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
+        RealmResults<Route> routes = mRealm.where(Route.class).findAll();
+        RouteRealmAdapter adapter = new RouteRealmAdapter(getActivity(), routes, true);
         recyclerView.setAdapter(adapter);
         return v;
     }

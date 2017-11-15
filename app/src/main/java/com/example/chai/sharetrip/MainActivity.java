@@ -1,24 +1,17 @@
 package com.example.chai.sharetrip;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-
+import android.view.KeyEvent;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.nifty.cloud.mb.core.NCMB;
-import com.nifty.cloud.mb.core.NCMBException;
 
+import io.realm.Realm;
 
 
 public class MainActivity extends AppCompatActivity implements TripListFragment.OnFragmentInteractionListener{
@@ -30,9 +23,22 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final EditText editText = (EditText) findViewById(R.id.editText);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    String text = editText.getText().toString();
+                    TripListFragment.tour_id = text;
+                    return true;
+                }
+                return true;
+            }
+        });
+
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        //createTestData();
+        createTestData();
         showTourList();
 
 
@@ -43,18 +49,20 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         //createTestData();
         //検索の利用はこの通り使ってください。ツアータイトルを検索します。全部一致のみ検索できます。allで全てのサーバー上のデータ。MyTourでローカルのみのデータ（testデータはこっち）
 
+        /*
         try {
             //下関観光と検索
             RealmResults result = MyUtils.getAllObjectId("all");
             if(result == null || result.size() == 0) {
-                Log.d("realm", "検索結果がありません。");
+                d("realm", "検索結果がありません。");
             } else {
-                Log.d("size", String.valueOf(result.size()));
-                Log.d("result", String.valueOf(result.first()));
+                d("size", String.valueOf(result.size()));
+                d("result", String.valueOf(result.first()));
             }
         }catch (NCMBException e){
             Log.e("NCMB", "error");
         }
+        */
         //強制で詳細画面を表示
         //Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         //startActivity(intent)

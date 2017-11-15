@@ -10,12 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nifty.cloud.mb.core.NCMBException;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 //p286-
 public class TripListFragment extends Fragment {
-
     private OnFragmentInteractionListener mListener;
     private Realm mRealm;
 
@@ -52,17 +53,15 @@ public class TripListFragment extends Fragment {
 
         recyclerView.setLayoutManager(llm);
 
-        Log.e("tour_id", tour_id);
-        /*
+        Log.d("tour_id", tour_id);
         try {
-            tours = MyUtils.getAllObjectId(tour_id);
-        } catch (NCMBException e)
+            RealmResults<Tour> tours = MyUtils.getAllObjectId(tour_id);
+            //RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
+            TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
+            recyclerView.setAdapter(adapter);
+        } catch (NCMBException e) {
             Log.e("getTour", "ERR");
         }
-        */
-        RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
-        TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
-        recyclerView.setAdapter(adapter);
         return v;
     }
 

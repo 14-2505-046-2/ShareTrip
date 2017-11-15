@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     String text = editText.getText().toString();
                     TripListFragment.tour_id = text;
+                    showTourList();
                     return true;
                 }
                 return true;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        createTestData();
+        //createTestData();
         showTourList();
 
 
@@ -131,6 +133,12 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
             fragment = new TripListFragment();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.content, fragment, "TripListFragment");
+            transaction.commit();
+        }
+        else {
+            fragment = new TripListFragment();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(R.id.content, fragment, "TripListFragment");
             transaction.commit();
         }
     }

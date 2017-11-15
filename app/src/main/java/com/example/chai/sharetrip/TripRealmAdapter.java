@@ -1,6 +1,7 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -49,6 +50,19 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
     public TripViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tripcard_layout, parent, false);
         final TripViewHolder holder = new TripViewHolder(itemView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Tour tour = getData().get(position);
+                long tourId = tour.tour_id;
+
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra(DetailActivity.TOUR_ID, tourId);
+                context.startActivity(intent);
+            }
+        });
         return holder;
     }
 

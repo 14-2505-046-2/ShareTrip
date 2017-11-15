@@ -25,16 +25,16 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         protected TextView name;
         protected TextView start_time;
         protected TextView end_time;
-        protected ImageView spot_photo;
-        protected ImageView means;
+        protected TextView comment;
+        protected ImageView photo;
 
         public TripViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
             start_time = (TextView) itemView.findViewById(R.id.start_time);
             end_time = (TextView) itemView.findViewById(R.id.end_time);
-            spot_photo = (ImageView) itemView.findViewById(R.id.image);
-            means = (ImageView) itemView.findViewById(R.id.means);
+            comment = (TextView) itemView.findViewById(R.id.comment);
+            photo = (ImageView) itemView.findViewById(R.id.photo);
 
         }
     }
@@ -57,9 +57,37 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         holder.name.setText(route.name);
         holder.start_time.setText(route.start_time);
         holder.end_time.setText(route.end_time);
+        holder.comment.setText(route.comment);
+        /*
         if(route.image != null && route.image.length != 0) {
             Bitmap bmp = MyUtils.getImageFromByte(route.image);
-            holder.spot_photo.setImageBitmap(bmp);
+            holder.photo.setImageBitmap(bmp);
+        }
+        */
+        if(route.flag_area == false) {
+            switch (route.means) {
+                case 0:
+                    holder.photo.setImageResource(R.drawable.icon_walk);
+                    break;
+                case 1:
+                    holder.photo.setImageResource(R.drawable.icon_bike);
+                    break;
+                case 2:
+                    holder.photo.setImageResource(R.drawable.icon_car);
+                    break;
+                case 3:
+                    holder.photo.setImageResource(R.drawable.icon_bus);
+                    break;
+                case 4:
+                    holder.photo.setImageResource(R.drawable.icon_train);
+                    break;
+                case 5:
+                    holder.photo.setImageResource(R.drawable.icon_bullet);
+                    break;
+                case 6:
+                    holder.photo.setImageResource(R.drawable.icon_airplane);
+                    break;
+            }
         }
     }
 }

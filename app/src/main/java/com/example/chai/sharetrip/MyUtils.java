@@ -110,6 +110,7 @@ public class MyUtils {
         tour.total_time = o.getString("total_time");
         tour.upload_date = o.getString("createDate");
         tour.objectId = o.getString("objectId");
+        tour.image = o.getString("image");
         Log.d("test", tour.objectId);
         mRealm.commitTransaction();
 

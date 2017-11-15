@@ -15,6 +15,7 @@ import android.util.Log;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 
 /**
  * Created by enPiT-P22 on 2017/11/04.
@@ -23,6 +24,8 @@ import io.realm.RealmRecyclerViewAdapter;
 public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAdapter.TripViewHolder>{
 
     Context context;
+
+    public RealmResults<Tour> tours;
 
     public static class TripViewHolder extends RecyclerView.ViewHolder {
         protected TextView title;

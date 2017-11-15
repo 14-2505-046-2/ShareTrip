@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ public class TripListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Realm mRealm;
+
+    public static String tour_id = "all";
 
     public TripListFragment() {
 
@@ -49,6 +52,14 @@ public class TripListFragment extends Fragment {
 
         recyclerView.setLayoutManager(llm);
 
+        Log.e("tour_id", tour_id);
+        /*
+        try {
+            tours = MyUtils.getAllObjectId(tour_id);
+        } catch (NCMBException e)
+            Log.e("getTour", "ERR");
+        }
+        */
         RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
         TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
         recyclerView.setAdapter(adapter);

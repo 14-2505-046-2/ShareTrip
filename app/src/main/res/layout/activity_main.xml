@@ -26,9 +26,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/editText"
-                app:srcCompat="@android:drawable/ic_menu_search"
                 android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:focusableInTouchMode="true"
+                android:onClick="onClickSearchButton"
+                app:srcCompat="@android:drawable/ic_menu_search" />
 
             <EditText
                 android:id="@+id/editText"
@@ -39,6 +40,7 @@
                 android:layout_toStartOf="@+id/imageButton"
                 android:ems="10"
                 android:hint="キーワードを入力"
+                android:imeOptions="actionSearch"
                 android:inputType="textPersonName"
                 tools:text="キーワードを入力" />
 

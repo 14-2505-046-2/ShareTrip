@@ -1,7 +1,7 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,14 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.util.Log;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
@@ -70,6 +62,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         holder.comment.setText(route.comment);
 
         if(route.flag_area) {
+            holder.icon.setVisibility(View.INVISIBLE);
             Uri uri = Uri.parse(route.image);
             Uri.Builder builder = uri.buildUpon();
             AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);

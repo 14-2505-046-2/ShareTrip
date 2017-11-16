@@ -1,5 +1,6 @@
 package com.example.chai.sharetrip;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,7 +19,7 @@ import com.nifty.cloud.mb.core.NCMB;
 import io.realm.Realm;
 
 
-public class MainActivity extends AppCompatActivity implements TripListFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements TripListFragment.OnFragmentInteractionListener {
 
     private Realm mRealm;
 
@@ -23,29 +27,16 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        final EditText editText = (EditText) findViewById(R.id.editText);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    String text = editText.getText().toString();
-                    TripListFragment.tour_id = text;
-                    showTourList();
-                    return true;
-                }
-                return true;
-            }
-        });
+        onSearchTour();
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        //createTestData();
+        createTestData();
         showTourList();
 
 
         //データベースサーバー使用のため
-        NCMB.initialize(this.getApplicationContext(),"041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
+        NCMB.initialize(this.getApplicationContext(), "041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
 
         //テスト用
         //createTestData();
@@ -134,8 +125,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.content, fragment, "TripListFragment");
             transaction.commit();
-        }
-        else {
+        } else {
             fragment = new TripListFragment();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.content, fragment, "TripListFragment");
@@ -146,5 +136,43 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
     @Override
     public void onAddTourSelected() {
         //新規ツアー追加処理をここに
+    }
+
+    public void onSearchTour(){
+        final EditText editText = (EditText) findViewById(R.id.editText);
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus == false) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+        });
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String text = editText.getText().toString();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    Log.d("Search", "push");
+                    TripListFragment.tour_id = text;
+                    showTourList();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void onClickSearchButton(View v) {
+        final EditText editText = (EditText) findViewById(R.id.editText);
+        String text = editText.getText().toString();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        Log.d("Search", "push");
+        TripListFragment.tour_id = text;
+        showTourList();
     }
 }

@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         //startActivity(intent);
 
 
-        //spinnerのリスナーを設定
-        Spinner spinner = (Spinner)findViewById(R.id.spinner_area);
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+        //spinner_areaのリスナーを設定
+        Spinner spinner_area = (Spinner)findViewById(R.id.spinner_area);
+        spinner_area.setOnItemSelectedListener(new OnItemSelectedListener() {
             //　アイテムが選択された時
             @Override
             public void onItemSelected(AdapterView<?> parent,
@@ -75,6 +75,25 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 Spinner spinner = (Spinner)parent;
                 String item = (String)spinner.getSelectedItem();
                 TripListFragment.area = item;
+                showTourList();
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        //spinner_timeのリスナーを設定
+        Spinner spinner_time = (Spinner)findViewById(R.id.spinner_time);
+        spinner_time.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                Spinner spinner = (Spinner)parent;
+                long item = (long)spinner.getSelectedItemId();
+
+                TripListFragment.time = item;
                 showTourList();
             }
 

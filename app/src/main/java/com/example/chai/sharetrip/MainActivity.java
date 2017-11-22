@@ -11,8 +11,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.nifty.cloud.mb.core.NCMB;
 
@@ -59,6 +63,25 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         //強制で詳細画面を表示
         //Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         //startActivity(intent);
+
+
+        //spinnerのリスナーを設定
+        Spinner spinner = (Spinner)findViewById(R.id.spinner_area);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                Spinner spinner = (Spinner)parent;
+                String item = (String)spinner.getSelectedItem();
+                TripListFragment.area = item;
+                showTourList();
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     //テストデータの生成用です。

@@ -129,7 +129,7 @@ public class MyUtils {
 
     //必要なツアーのtour_idを配列として返す。引数は検索する文字列。
     //"おすすめ"、"マイツアー"をキーワードとしておすすめ、マイツアーのtour_idを返します。
-    public static RealmResults<Tour> getAllObjectId(String word, String area) throws NCMBException {
+    public static RealmResults<Tour> getAllObjectId(String word, String area, long time) throws NCMBException {
         if (word.equals("MyTour")) {
             Realm realm = Realm.getDefaultInstance();
             RealmQuery results = realm.where(Tour.class).equalTo("objectId", "local_data");
@@ -146,6 +146,10 @@ public class MyUtils {
             //areaに一致するものを検索
             if(!area.equals("全て")) {
                 query.whereEqualTo("area", area);
+            }
+            //timeに一致するものを検索
+            if(time != 0) {
+                query.whereEqualTo("rough_time", time);
             }
             list = new ArrayList<Long>();
             //データストアからデータを検索

@@ -3,9 +3,9 @@
 
     <string-array name="time">
         <item>全て</item>
-        <item>長時間</item>
-        <item>中時間</item>
         <item>短時間</item>
+        <item>中時間</item>
+        <item>長時間</item>
     </string-array>
 
     <string-array name="area">

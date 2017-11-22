@@ -61,12 +61,15 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         holder.end_time.setText(route.end_time);
         holder.comment.setText(route.comment);
 
+
         if(route.flag_area) {
-            holder.icon.setVisibility(View.INVISIBLE);
-            Uri uri = Uri.parse(route.image);
-            Uri.Builder builder = uri.buildUpon();
-            AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
-            task.execute(builder);
+            if(!route.image.equals("")) {
+                holder.icon.setVisibility(View.INVISIBLE);
+                Uri uri = Uri.parse(route.image);
+                Uri.Builder builder = uri.buildUpon();
+                AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
+                task.execute(builder);
+            }
         }
         else {
             holder.photo.setVisibility(View.INVISIBLE);

@@ -1,7 +1,9 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
@@ -42,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(), "041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
 
-        //テスト用
-        //createTestData();
         //検索の利用はこの通り使ってください。ツアータイトルを検索します。全部一致のみ検索できます。allで全てのサーバー上のデータ。MyTourでローカルのみのデータ（testデータはこっち）
 
         /*
@@ -215,16 +216,52 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         Log.d("Search", "push");
         TripListFragment.tour_id = text;
+
+        final RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
+        search_bar.setVisibility(View.GONE);
+
         showTourList();
     }
 
+    //検索バー表示ボタンをクリック
+    public void onClickSearchViewButton(View view) {
+        final RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
+        if(search_bar.getVisibility() == View.GONE) {
+            search_bar.setVisibility(View.VISIBLE);
+        }
+        else {
+            search_bar.setVisibility(View.GONE);
+        }
+        if(TripListFragment.tour_id.equals("MyTour")) {
+            final EditText editText = (EditText) findViewById(R.id.editText);
+            String text = editText.getText().toString();
+            TripListFragment.tour_id = text;
+            reTitle();
+            showTourList();
+        }
+    }
+
+    //マイツアーボタンを押した時
     public void onClickMyTour(View v) {
+        RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
+        ImageButton button = (ImageButton)findViewById(R.id.myTour);
         if(!TripListFragment.tour_id.equals("MyTour")) {
             TripListFragment.tour_id = "MyTour";
+            search_bar.setVisibility(View.GONE);
+            TextView title = (TextView)findViewById(R.id.title);
+            title.setText("マイツアー");
         }
         else {
             TripListFragment.tour_id = "";
+            reTitle();
         }
         showTourList();
+    }
+
+    //近くのルートに書き換えるだけ。
+    public void reTitle() {
+        String text = "";
+        TextView title = (TextView)findViewById(R.id.title);
+        title.setText("近くのルート");
     }
 }

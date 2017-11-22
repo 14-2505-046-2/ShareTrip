@@ -128,7 +128,7 @@ public class MyUtils {
     }
 
     //必要なツアーのtour_idを配列として返す。引数は検索する文字列。
-    //"おすすめ"、"マイツアー"をキーワードとしておすすめ、マイツアーのtour_idを返します。
+    //"おすすめ"、"MyTour"をキーワードとしておすすめ、マイツアーのtour_idを返します。
     public static RealmResults<Tour> getAllObjectId(String word, String area, long time) throws NCMBException {
         if (word.equals("MyTour")) {
             Realm realm = Realm.getDefaultInstance();

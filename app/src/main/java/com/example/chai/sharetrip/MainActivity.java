@@ -13,9 +13,9 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.nifty.cloud.mb.core.NCMB;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        createTestData();
+        //createTestData();
         showTourList();
 
 
@@ -215,6 +215,16 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         Log.d("Search", "push");
         TripListFragment.tour_id = text;
+        showTourList();
+    }
+
+    public void onClickMyTour(View v) {
+        if(!TripListFragment.tour_id.equals("MyTour")) {
+            TripListFragment.tour_id = "MyTour";
+        }
+        else {
+            TripListFragment.tour_id = "";
+        }
         showTourList();
     }
 }

@@ -80,9 +80,11 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         holder.start.setText(tour.start_time);
         holder.total.setText(tour.total_time);
 
-        Uri uri = Uri.parse(tour.image);
-        Uri.Builder builder = uri.buildUpon();
-        AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
-        task.execute(builder);
+        if(!tour.image.equals("")) {
+            Uri uri = Uri.parse(tour.image);
+            Uri.Builder builder = uri.buildUpon();
+            AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
+            task.execute(builder);
+        }
     }
 }

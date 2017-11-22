@@ -16,7 +16,7 @@ public class Route extends RealmObject {
     public String comment;
     //場所の場合必要なもの（交通手段なら参照されない。）
     public String name;
-    public String image;
+    public String image = "";
     public String link;
     //交通手段で必要なもの（場所なら参照されない。）
     public int means;//この交通手段は0-6までで（0:徒歩 1:自転車 2:車 3:バス 4:電車 5:新幹線 6:飛行機)

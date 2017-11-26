@@ -1,9 +1,7 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,11 +37,14 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
         //createTestData();
-        showTourList();
-
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(), "041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
+
+        //アップロードのテスト用。0は最初にtestデータを作成した場合テストデータをアップロード
+        //MyUtils.upload_tour((long) 0);
+
+        showTourList();
 
         //検索の利用はこの通り使ってください。ツアータイトルを検索します。全部一致のみ検索できます。allで全てのサーバー上のデータ。MyTourでローカルのみのデータ（testデータはこっち）
 
@@ -117,9 +118,10 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 tour.tour_title = "宇部満喫旅行(test)";
                 tour.author = "ちゃい";
                 tour.comment = "テスト用のデータです。";
-                tour.start_time = "１０時";
-                tour.total_time = "８時間";
+                tour.start_time = "10:00";
+                tour.total_time = 8;
                 tour.upload_date = "２０１８年１１月１日";
+                tour.area = "宇部市";
 
                 //ここからRouteデータの作成
                 //常盤公園

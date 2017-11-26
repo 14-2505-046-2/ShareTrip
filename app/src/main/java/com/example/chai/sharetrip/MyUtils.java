@@ -15,7 +15,7 @@ import java.util.List;
 import com.nifty.cloud.mb.core.NCMBException;
 import com.nifty.cloud.mb.core.NCMBObject;
 import com.nifty.cloud.mb.core.NCMBQuery;
-import com.nifty.cloud.mb.core.FindCallback;
+import com.nifty.cloud.mb.core.DoneCallback;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -107,7 +107,7 @@ public class MyUtils {
         tour.author = o.getString("author");
         tour.comment = o.getString("comment");
         tour.start_time = o.getString("start_time");
-        tour.total_time = o.getString("total_time");
+        tour.total_time = o.getLong("total_time");
         tour.upload_date = o.getString("createDate");
         tour.objectId = o.getString("objectId");
         tour.image = o.getString("image");
@@ -188,5 +188,62 @@ public class MyUtils {
             }
         }
         return null;
+    }
+
+    public static void upload_tour(Long tour_id) {
+        Realm realm = Realm.getDefaultInstance();
+        Tour tour = realm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();
+
+        NCMBObject obj = new NCMBObject("Tour");
+
+        obj.put("tour_title", tour.tour_title);
+        obj.put("start_time", tour.start_time);
+        obj.put("total_time", tour.total_time);
+        obj.put("author", tour.author);
+        obj.put("comment", tour.comment);
+        obj.put("area", "宇部市");
+        obj.put("flag_route", false);
+        obj.put("image", "");
+        if(tour.total_time <= 2) {
+            obj.put("rough_time", 1);
+        }
+        else if(tour.total_time <= 4) {
+            obj.put("rough_time", 2);
+        }
+        else {
+            obj.put("rough_time", 2);
+        }
+
+        try {
+            obj.save();
+        } catch (NCMBException e) {
+            Log.e("upload_tour", e.toString());
+        }
+
+        String objectId = obj.getString("objectId");
+
+        RealmResults<Route> results = realm.where(Route.class).equalTo("tour_id", tour_id).findAll();
+        for(int i = 0; i < results.size(); i++) {
+            Route route = results.get(i);
+            NCMBObject obj_route = new NCMBObject("Route");
+            obj_route.put("tour_id", objectId);
+            obj_route.put("flag_area", route.flag_area);
+            obj_route.put("comment", route.comment);
+            if(route.flag_area) {
+                obj_route.put("name", route.name);
+                obj_route.put("image", "");
+                obj_route.put("link", "");
+            }
+            else {
+                obj_route.put("means", route.means);
+                obj_route.put("start_time", route.start_time);
+                obj_route.put("end_time", route.end_time);
+            }
+            try {
+                obj_route.save();
+            } catch (NCMBException e) {
+                Log.e("upload_route", e.toString());
+            }
+        }
     }
 }

@@ -15,10 +15,11 @@ public class Tour extends RealmObject {
     public long tour_id;
     public String tour_title;
     public String start_time;
-    public String total_time;
+    public long total_time;
     public String upload_date;
     public String author;
-    public String comment;
+    public String comment = "";
     public String image = "";
+    public String area;
     public String objectId = "local_data";
 }

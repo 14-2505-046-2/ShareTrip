@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         //アップロードのテスト用。0は最初にtestデータを作成した場合テストデータをアップロード
         //MyUtils.upload_tour((long) 0);
+        //アップロードしたテストの削除
+        //MyUtils.delete_test();
 
         showTourList();
 

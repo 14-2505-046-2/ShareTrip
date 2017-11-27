@@ -1,6 +1,8 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -122,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 tour.total_time = 8;
                 tour.upload_date = "２０１８年１１月１日";
                 tour.area = "宇部市";
+                Bitmap bitmap_tour = BitmapFactory.decodeResource(getResources(), R.drawable.icon_bike);
+                tour.image = MyUtils.getByteFromImage(bitmap_tour);
 
                 //ここからRouteデータの作成
                 //常盤公園
@@ -134,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 route.flag_area = true;
                 route.link = "https://www.tokiwapark.jp";
                 route.comment = "常盤公園は彫刻がたくさん！";
+                Bitmap bitmap_route = BitmapFactory.decodeResource(getResources(), R.drawable.icon_airplane);
+                route.image = MyUtils.getByteFromImage(bitmap_route);
 
                 //バス移動
                 Number maxId3 = mRealm.where(Route.class).max("route_id");

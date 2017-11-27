@@ -15,7 +15,8 @@ import java.util.List;
 import com.nifty.cloud.mb.core.NCMBException;
 import com.nifty.cloud.mb.core.NCMBObject;
 import com.nifty.cloud.mb.core.NCMBQuery;
-import com.nifty.cloud.mb.core.DoneCallback;
+import com.nifty.cloud.mb.core.NCMBFile;
+import com.nifty.cloud.mb.core.FetchFileCallback;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -90,8 +91,13 @@ public class MyUtils {
         route.end_time = o.getString("end_time");
         route.comment = o.getString("comment");
         route.link = o.getString("link");
-        route.image = o.getString("image");
         route.name = o.getString("name");
+        NCMBFile file = new NCMBFile(o.getString("image"));
+        try {
+            route.image = file.fetch();
+        } catch (NCMBException e) {
+            Log.e("fetch_image", e.toString());
+        }
         mRealm.commitTransaction();
     }
 
@@ -110,7 +116,15 @@ public class MyUtils {
         tour.total_time = o.getLong("total_time");
         tour.upload_date = o.getString("createDate");
         tour.objectId = o.getString("objectId");
-        tour.image = o.getString("image");
+        //tour.image = o.getString("image");
+
+        NCMBFile file = new NCMBFile(o.getString("image"));
+        try {
+            tour.image = file.fetch();
+        } catch (NCMBException e) {
+            Log.e("fetch_image", e.toString());
+        }
+
         Log.d("test", tour.objectId);
         mRealm.commitTransaction();
 
@@ -190,6 +204,7 @@ public class MyUtils {
         return null;
     }
 
+    //tourのアップロード
     public static void upload_tour(Long tour_id) {
         Realm realm = Realm.getDefaultInstance();
         Tour tour = realm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();

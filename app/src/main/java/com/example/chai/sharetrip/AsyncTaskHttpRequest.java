@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//使ってない。
 public class AsyncTaskHttpRequest extends AsyncTask<Uri.Builder, Void, Bitmap>{
     private ImageView imageView;
 

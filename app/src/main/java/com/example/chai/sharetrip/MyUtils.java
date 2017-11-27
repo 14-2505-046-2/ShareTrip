@@ -28,6 +28,7 @@ import io.realm.RealmResults;
 
 public class MyUtils {
     public static ArrayList<Long> list = new ArrayList<Long>();
+    public static boolean is_test = true;//テストの間はtrueで。（upload用)
 
     //byte型配列からBitmapインスタンスへの変換　-> p314
     public static Bitmap getImageFromByte(byte[] bytes) {
@@ -219,6 +220,7 @@ public class MyUtils {
         obj.put("area", "宇部市");
         obj.put("flag_route", false);
         obj.put("image", "");
+        obj.put("is_test", is_test);
         if(tour.total_time <= 2) {
             obj.put("rough_time", 1);
         }
@@ -244,6 +246,7 @@ public class MyUtils {
             obj_route.put("tour_id", objectId);
             obj_route.put("flag_area", route.flag_area);
             obj_route.put("comment", route.comment);
+            obj_route.put("is_test", is_test);
             if(route.flag_area) {
                 obj_route.put("name", route.name);
                 obj_route.put("image", "");
@@ -259,6 +262,31 @@ public class MyUtils {
             } catch (NCMBException e) {
                 Log.e("upload_route", e.toString());
             }
+        }
+    }
+
+    public static void delete_test() {
+        NCMBQuery<NCMBObject> query = new NCMBQuery<>("Tour");
+        query.whereEqualTo("is_test", true);
+        try {
+            List<NCMBObject> results = query.find();
+            for(int i = 0; i < results.size(); i++) {
+                NCMBObject o = results.get(i);
+                o.deleteObject();
+            }
+        } catch (NCMBException e) {
+            Log.e("delete_test", e.toString());
+        }
+        NCMBQuery<NCMBObject> query1 = new NCMBQuery<>("Route");
+        query1.whereEqualTo("is_test", true);
+        try {
+            List<NCMBObject> results = query1.find();
+            for(int i = 0; i < results.size(); i++) {
+                NCMBObject o = results.get(i);
+                o.deleteObject();
+            }
+        } catch (NCMBException e) {
+            Log.e("delete_test", e.toString());
         }
     }
 }

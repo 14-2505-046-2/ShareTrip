@@ -16,7 +16,7 @@ import com.nifty.cloud.mb.core.NCMBException;
 import com.nifty.cloud.mb.core.NCMBObject;
 import com.nifty.cloud.mb.core.NCMBQuery;
 import com.nifty.cloud.mb.core.NCMBFile;
-import com.nifty.cloud.mb.core.FetchFileCallback;
+import com.nifty.cloud.mb.core.NCMBAcl;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -117,7 +117,6 @@ public class MyUtils {
         tour.total_time = o.getLong("total_time");
         tour.upload_date = o.getString("createDate");
         tour.objectId = o.getString("objectId");
-        //tour.image = o.getString("image");
 
         NCMBFile file = new NCMBFile(o.getString("image"));
         try {
@@ -238,6 +237,19 @@ public class MyUtils {
         }
 
         String objectId = obj.getString("objectId");
+        obj.put("image", objectId + ".png");
+        try {
+            obj.save();
+        } catch (NCMBException e) {
+            e.printStackTrace();
+        }
+
+        NCMBFile file = new NCMBFile(objectId + ".png", tour.image, new NCMBAcl());
+        try {
+            file.save();
+        } catch (NCMBException e) {
+            Log.e("upload_file", e.toString());
+        }
 
         RealmResults<Route> results = realm.where(Route.class).equalTo("tour_id", tour_id).findAll();
         for(int i = 0; i < results.size(); i++) {
@@ -249,7 +261,6 @@ public class MyUtils {
             obj_route.put("is_test", is_test);
             if(route.flag_area) {
                 obj_route.put("name", route.name);
-                obj_route.put("image", "");
                 obj_route.put("link", "");
             }
             else {
@@ -262,9 +273,25 @@ public class MyUtils {
             } catch (NCMBException e) {
                 Log.e("upload_route", e.toString());
             }
+            if(route.flag_area) {
+                String objectId_route = obj_route.getString("objectId");
+                obj_route.put("image", objectId_route + ".png");
+                try {
+                    obj_route.save();
+                } catch (NCMBException e) {
+                    e.printStackTrace();
+                }
+                NCMBFile file_route = new NCMBFile(objectId_route + ".png", route.image, new NCMBAcl());
+                try {
+                    file_route.save();
+                } catch (NCMBException e) {
+                    Log.e("upload_file", e.toString());
+                }
+            }
         }
     }
 
+    //testデータを全て削除
     public static void delete_test() {
         NCMBQuery<NCMBObject> query = new NCMBQuery<>("Tour");
         query.whereEqualTo("is_test", true);
@@ -272,7 +299,14 @@ public class MyUtils {
             List<NCMBObject> results = query.find();
             for(int i = 0; i < results.size(); i++) {
                 NCMBObject o = results.get(i);
+                String image = o.getString("image");
                 o.deleteObject();
+                NCMBFile file = new NCMBFile(image);
+                try {
+                    file.delete();
+                } catch(Throwable throwable) {
+
+                }
             }
         } catch (NCMBException e) {
             Log.e("delete_test", e.toString());
@@ -283,7 +317,14 @@ public class MyUtils {
             List<NCMBObject> results = query1.find();
             for(int i = 0; i < results.size(); i++) {
                 NCMBObject o = results.get(i);
+                String image = o.getString("image");
                 o.deleteObject();
+                NCMBFile file = new NCMBFile(image);
+                try {
+                    file.delete();
+                } catch(Throwable throwable) {
+
+                }
             }
         } catch (NCMBException e) {
             Log.e("delete_test", e.toString());

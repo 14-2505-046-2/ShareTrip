@@ -165,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 route3.flag_area = true;
                 route3.link = "https://www.tokiwafes.com";
                 route3.comment = "常盤祭やってます。";
+                Bitmap bitmap_route3 = BitmapFactory.decodeResource(getResources(), R.drawable.icon_bullet);
+                route3.image = MyUtils.getByteFromImage(bitmap_route3);
 
             }
         });

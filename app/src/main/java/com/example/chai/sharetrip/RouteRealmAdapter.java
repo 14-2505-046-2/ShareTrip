@@ -1,6 +1,7 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -63,12 +64,9 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
 
 
         if(route.flag_area) {
-            if(!route.image.equals("")) {
-                holder.icon.setVisibility(View.INVISIBLE);
-                Uri uri = Uri.parse(route.image);
-                Uri.Builder builder = uri.buildUpon();
-                AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
-                task.execute(builder);
+            if(route.image != null && route.image.length != 0) {
+                Bitmap bitmap = MyUtils.getImageFromByte(route.image);
+                holder.photo.setImageBitmap(bitmap);
             }
         }
         else {

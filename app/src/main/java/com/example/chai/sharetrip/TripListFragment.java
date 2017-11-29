@@ -2,11 +2,15 @@ package com.example.chai.sharetrip;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -86,5 +90,29 @@ public class TripListFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onAddTourSelected();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_add_tour, menu);
+        MenuItem addTour = menu.findItem(R.id.menu_item_add_tour);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_add_tour:
+                Log.d("AddTourSelected", "Add");
+                if (mListener != null) mListener.onAddTourSelected();
+                return true;
+        }
+        return false;
     }
 }

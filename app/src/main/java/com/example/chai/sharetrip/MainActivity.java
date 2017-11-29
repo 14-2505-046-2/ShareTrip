@@ -1,8 +1,12 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+
+import android.content.Intent;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -125,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 tour.start_time = "10:00";
                 tour.total_time = 8;
                 tour.upload_date = "２０１８年１１月１日";
+
                 tour.area = "宇部市";
                 Bitmap bitmap_tour = BitmapFactory.decodeResource(getResources(), R.drawable.icon_bike);
                 tour.image = MyUtils.getByteFromImage(bitmap_tour);
@@ -219,6 +224,11 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 return false;
             }
         });
+    }
+
+    public void onClickAddTourActivityButton (View v) {
+        Intent intent = new Intent(this, AddTourActivity.class);
+        startActivity(intent);
     }
 
     public void onClickSearchButton(View v) {

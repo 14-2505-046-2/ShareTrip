@@ -1,6 +1,7 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 tour.start_time = "１０時";
                 tour.total_time = "８時間";
                 tour.upload_date = "２０１８年１１月１日";
+                tour.image = "null";
 
                 //ここからRouteデータの作成
                 //常盤公園
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 route.flag_area = true;
                 route.link = "https://www.tokiwapark.jp";
                 route.comment = "常盤公園は彫刻がたくさん！";
+                route.image = "null";
 
                 //バス移動
                 Number maxId3 = mRealm.where(Route.class).max("route_id");
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 route3.flag_area = true;
                 route3.link = "https://www.tokiwafes.com";
                 route3.comment = "常盤祭やってます。";
+                route3.image = "null";
 
             }
         });
@@ -164,6 +168,11 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 return false;
             }
         });
+    }
+
+    public void onClickAddTourActivityButton (View v) {
+        Intent intent = new Intent(this, AddTourActivity.class);
+        startActivity(intent);
     }
 
     public void onClickSearchButton(View v) {

@@ -5,12 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#EDAE00"
+    >
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:layout_margin="4dp"
+        android:background="#FBDADE"
+        >
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

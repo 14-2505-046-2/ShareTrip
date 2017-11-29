@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#EDAE00"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -16,9 +18,26 @@
         android:weightSum="1"
         app:expanded="false">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editText"
+            android:layout_alignBottom="@+id/editText"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
+            android:padding="5dp"
+            android:text="近くのルート"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:padding="5dp"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -38,22 +57,87 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/imageButton"
-                android:layout_toStartOf="@+id/imageButton"
                 android:ems="10"
                 android:hint="キーワードを入力"
                 android:imeOptions="actionSearch"
                 android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="38dp"
                 tools:text="キーワードを入力" />
 
         </RelativeLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/time_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="場所："
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/spinner_time"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Spinner
+                android:id="@+id/spinner_area"
+                android:layout_width="125dp"
+                android:layout_height="27dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="0dp"
+                android:layout_toEndOf="@+id/spinner_time"
+                android:layout_toRightOf="@+id/spinner_time"
+                android:entries="@array/area"
+                android:spinnerMode="dialog"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Spinner
+                android:id="@+id/spinner_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="0.25"
+                android:entries="@array/time"
+                android:spinnerMode="dialog"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="時間："
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="451dp"
+        android:layout_height="426dp"
         android:layout_gravity="top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -63,18 +147,20 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:weightSum="1">
 
         <ImageButton
-            android:id="@+id/imageButton7"
+            android:id="@+id/search_view_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
+            android:onClick="onClickSearchViewButton"
             app:srcCompat="@android:drawable/ic_menu_search" />
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/create_tour"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
@@ -82,18 +168,19 @@
             app:srcCompat="@android:drawable/ic_menu_add" />
 
         <ImageButton
-            android:id="@+id/imageButton8"
+            android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             app:srcCompat="@android:drawable/ic_menu_share" />
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/myTour"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            app:srcCompat="@android:drawable/ic_menu_manage" />
+            android:onClick="onClickMyTour"
+            app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
     </LinearLayout>
 

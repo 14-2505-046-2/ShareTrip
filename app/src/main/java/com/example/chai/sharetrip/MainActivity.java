@@ -1,7 +1,12 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+
 import android.content.Intent;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +17,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Spinner;
 
 import com.nifty.cloud.mb.core.NCMB;
 
@@ -32,15 +42,18 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        createTestData();
-        showTourList();
-
+        //createTestData();
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(), "041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
 
-        //テスト用
-        //createTestData();
+        //アップロードのテスト用。0は最初にtestデータを作成した場合テストデータをアップロード
+        //MyUtils.upload_tour((long) 0);
+        //アップロードしたテストの削除
+        //MyUtils.delete_test();
+
+        showTourList();
+
         //検索の利用はこの通り使ってください。ツアータイトルを検索します。全部一致のみ検索できます。allで全てのサーバー上のデータ。MyTourでローカルのみのデータ（testデータはこっち）
 
         /*
@@ -60,6 +73,44 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         //強制で詳細画面を表示
         //Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         //startActivity(intent);
+
+
+        //spinner_areaのリスナーを設定
+        Spinner spinner_area = (Spinner)findViewById(R.id.spinner_area);
+        spinner_area.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                Spinner spinner = (Spinner)parent;
+                String item = (String)spinner.getSelectedItem();
+                TripListFragment.area = item;
+                showTourList();
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        //spinner_timeのリスナーを設定
+        Spinner spinner_time = (Spinner)findViewById(R.id.spinner_time);
+        spinner_time.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                Spinner spinner = (Spinner)parent;
+                long item = (long)spinner.getSelectedItemId();
+
+                TripListFragment.time = item;
+                showTourList();
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     //テストデータの生成用です。
@@ -75,10 +126,13 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 tour.tour_title = "宇部満喫旅行(test)";
                 tour.author = "ちゃい";
                 tour.comment = "テスト用のデータです。";
-                tour.start_time = "１０時";
-                tour.total_time = "８時間";
+                tour.start_time = "10:00";
+                tour.total_time = 8;
                 tour.upload_date = "２０１８年１１月１日";
-                tour.image = "null";
+
+                tour.area = "宇部市";
+                Bitmap bitmap_tour = BitmapFactory.decodeResource(getResources(), R.drawable.icon_bike);
+                tour.image = MyUtils.getByteFromImage(bitmap_tour);
 
                 //ここからRouteデータの作成
                 //常盤公園
@@ -91,7 +145,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 route.flag_area = true;
                 route.link = "https://www.tokiwapark.jp";
                 route.comment = "常盤公園は彫刻がたくさん！";
-                route.image = "null";
+                Bitmap bitmap_route = BitmapFactory.decodeResource(getResources(), R.drawable.icon_airplane);
+                route.image = MyUtils.getByteFromImage(bitmap_route);
 
                 //バス移動
                 Number maxId3 = mRealm.where(Route.class).max("route_id");
@@ -115,7 +170,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 route3.flag_area = true;
                 route3.link = "https://www.tokiwafes.com";
                 route3.comment = "常盤祭やってます。";
-                route3.image = "null";
+                Bitmap bitmap_route3 = BitmapFactory.decodeResource(getResources(), R.drawable.icon_bullet);
+                route3.image = MyUtils.getByteFromImage(bitmap_route3);
 
             }
         });
@@ -182,6 +238,52 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         Log.d("Search", "push");
         TripListFragment.tour_id = text;
+
+        final RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
+        search_bar.setVisibility(View.GONE);
+
         showTourList();
+    }
+
+    //検索バー表示ボタンをクリック
+    public void onClickSearchViewButton(View view) {
+        final RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
+        if(search_bar.getVisibility() == View.GONE) {
+            search_bar.setVisibility(View.VISIBLE);
+        }
+        else {
+            search_bar.setVisibility(View.GONE);
+        }
+        if(TripListFragment.tour_id.equals("MyTour")) {
+            final EditText editText = (EditText) findViewById(R.id.editText);
+            String text = editText.getText().toString();
+            TripListFragment.tour_id = text;
+            reTitle();
+            showTourList();
+        }
+    }
+
+    //マイツアーボタンを押した時
+    public void onClickMyTour(View v) {
+        RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
+        ImageButton button = (ImageButton)findViewById(R.id.myTour);
+        if(!TripListFragment.tour_id.equals("MyTour")) {
+            TripListFragment.tour_id = "MyTour";
+            search_bar.setVisibility(View.GONE);
+            TextView title = (TextView)findViewById(R.id.title);
+            title.setText("マイツアー");
+        }
+        else {
+            TripListFragment.tour_id = "";
+            reTitle();
+        }
+        showTourList();
+    }
+
+    //近くのルートに書き換えるだけ。
+    public void reTitle() {
+        String text = "";
+        TextView title = (TextView)findViewById(R.id.title);
+        title.setText("近くのルート");
     }
 }

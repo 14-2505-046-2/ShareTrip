@@ -78,11 +78,17 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         holder.author.setText(tour.author);
         holder.uploadDate.setText(tour.upload_date);
         holder.start.setText(tour.start_time);
-        holder.total.setText(tour.total_time);
+        holder.total.setText(String.valueOf(tour.total_time) + "時間");
 
-        Uri uri = Uri.parse(tour.image);
-        Uri.Builder builder = uri.buildUpon();
-        AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
-        task.execute(builder);
+        if(tour.image != null && tour.image.length != 0) {
+            /*
+            Uri uri = Uri.parse(tour.image);
+            Uri.Builder builder = uri.buildUpon();
+            AsyncTaskHttpRequest task = new AsyncTaskHttpRequest(holder.photo);
+            task.execute(builder);
+            */
+            Bitmap bitmap = MyUtils.getImageFromByte(tour.image);
+            holder.photo.setImageBitmap(bitmap);
+        }
     }
 }

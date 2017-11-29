@@ -25,6 +25,8 @@ public class TripListFragment extends Fragment {
     private Realm mRealm;
 
     public static String tour_id = "all";
+    public static String area = "全て";
+    public static long time = 0;
 
     public TripListFragment() {
 
@@ -59,7 +61,7 @@ public class TripListFragment extends Fragment {
 
         Log.d("tour_id", tour_id);
         try {
-            RealmResults<Tour> tours = MyUtils.getAllObjectId(tour_id);
+            RealmResults<Tour> tours = MyUtils.getAllObjectId(tour_id, area, time);
             //RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
             TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
             recyclerView.setAdapter(adapter);

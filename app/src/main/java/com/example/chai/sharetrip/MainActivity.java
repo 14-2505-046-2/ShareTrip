@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        createTestData();
+        //createTestData();
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(), "041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
@@ -226,8 +226,16 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         });
     }
 
+    //マイツアーのボタンを押す
+    public void onClickMyTourActivityButton (View v) {
+        Intent intent = new Intent(this, AddTourActivity.class);
+        startActivity(intent);
+    }
+
+    //ツアー追加ボタンを押す
     public void onClickAddTourActivityButton (View v) {
         Intent intent = new Intent(this, AddTourActivity.class);
+        intent.putExtra("is_add", true);
         startActivity(intent);
     }
 
@@ -263,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         }
     }
 
-    //マイツアーボタンを押した時
+    //マイツアーボタンを押した時(使ってない）
     public void onClickMyTour(View v) {
         RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
         ImageButton button = (ImageButton)findViewById(R.id.myTour);

@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
             public void execute(Realm realm) {
                 //Tourデータの作成。tour_idになるnextIdはRouteクラスでも使う。
                 Number maxId = mRealm.where(Tour.class).max("tour_id");
-                long nextId = 0;
+                long nextId = 1;
                 if (maxId != null) nextId = maxId.longValue() + 1;
                 Tour tour = realm.createObject(Tour.class, new Long(nextId));
                 tour.tour_title = "宇部満喫旅行(test)";

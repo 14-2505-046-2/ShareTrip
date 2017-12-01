@@ -107,7 +107,7 @@ public class MyUtils {
         mRealm.beginTransaction();
         mRealm = Realm.getDefaultInstance();
         Number maxId = mRealm.where(Tour.class).max("tour_id");
-        long nextId = 0;
+        long nextId = 1;
         if (maxId != null) nextId = maxId.longValue() + 1;
         Tour tour = mRealm.createObject(Tour.class, new Long(nextId));
         tour.tour_title = o.getString("tour_title");

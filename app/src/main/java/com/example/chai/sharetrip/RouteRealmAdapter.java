@@ -62,7 +62,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             holder.name.setText(route.name);
             holder.start_time.setText(route.start_time);
             holder.end_time.setText(route.end_time);
-            holder.comment.setText(route.comment);
+            holder.comment.setText(String.valueOf(route.comment));
 
             if (route.flag_area) {
                 if (route.image != null && route.image.length != 0) {
@@ -96,7 +96,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
                 }
             }
         }
-        else {
+        else if(route.route_id == TripDetailFragment.ADDROUTE) {
             holder.add_route_button.setVisibility(View.VISIBLE);
         }
     }

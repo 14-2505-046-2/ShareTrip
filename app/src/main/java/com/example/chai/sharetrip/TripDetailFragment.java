@@ -19,7 +19,7 @@ public class TripDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Realm mRealm;
-    public long tour_id_now;
+    public static final long ADDROUTE = -1;
 
     public TripDetailFragment() {
         // Required empty public constructor
@@ -53,16 +53,15 @@ public class TripDetailFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
 
         Tour tour = mRealm.where(Tour.class).equalTo("tour_id", DetailActivity.tour_id).findFirst();
-        tour_id_now = -tour.tour_id;
         Boolean local_flag = false;
         if(tour.objectId.equals("local_data")) {
             local_flag = true;
-            if(mRealm.where(Route.class).equalTo("route_id", tour_id_now).findAll().isEmpty()) {
+            if(mRealm.where(Route.class).equalTo("route_id", ADDROUTE).findAll().isEmpty()) {
                 mRealm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        Route route = realm.createObject(Route.class, tour_id_now);
-                        Log.d("add_button", String.valueOf(tour_id_now));
+                        Route route = realm.createObject(Route.class, ADDROUTE);
+                        Log.d("add_button", String.valueOf(ADDROUTE));
                     }
                 });
             }
@@ -71,7 +70,7 @@ public class TripDetailFragment extends Fragment {
         RealmQuery query = mRealm.where(Route.class).equalTo("tour_id", DetailActivity.tour_id);
         if(local_flag) {
             query = query.or();
-            query = query.equalTo("route_id", tour_id_now);
+            query = query.equalTo("route_id", ADDROUTE);
         }
         RealmResults<Route> routes = query.findAll();
 

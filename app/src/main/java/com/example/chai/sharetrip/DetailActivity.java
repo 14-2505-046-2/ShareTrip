@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -54,7 +55,7 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
     }
 
     public void onClickAddRouteActivityButton(View v) {
-
+        //新規ルート追加
         mRealm.beginTransaction();
         Number maxId = mRealm.where(Route.class).max("route_id");
         long nextId = 1;
@@ -62,6 +63,14 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         Route route = mRealm.createObject(Route.class, new Long(nextId));
         route.tour_id = tour_id;
         mRealm.commitTransaction();
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Route delete_route = realm.where(Route.class).equalTo("route_id", TripDetailFragment.ADDROUTE).findFirst();
+                delete_route.deleteFromRealm();
+                Route route = realm.createObject(Route.class, TripDetailFragment.ADDROUTE);
+            }
+        });
 
         NewRouteFragment newRouteFragment = NewRouteFragment.newInstance(nextId);
         FragmentManager manager = getSupportFragmentManager();

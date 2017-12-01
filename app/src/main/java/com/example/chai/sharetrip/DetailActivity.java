@@ -1,18 +1,20 @@
 package com.example.chai.sharetrip;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 public class DetailActivity extends AppCompatActivity implements TripDetailFragment.OnFragmentInteractionListener {
     public static final String TOUR_ID = "TOUR_ID";
@@ -26,9 +28,14 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         setContentView(R.layout.activity_detail);
         Intent intent = getIntent();
         tour_id = intent.getLongExtra(TOUR_ID, ERR_CD);
-        showDetailList();
+        showDetailList();;
         change_title();
         mRealm = Realm.getDefaultInstance();
+        Tour tour = mRealm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();
+        if(tour.objectId.equals("local_data")) {
+            ImageButton imageButton = (ImageButton) findViewById(R.id.upload_button);
+            imageButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private void change_title() {
@@ -78,5 +85,24 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         transaction.replace(R.id.content, newRouteFragment, "NewRouteFragment");
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    //アップロードボタン
+    public void onClickUploadButton(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("このツアーを公開しますか")
+                .setTitle("確認")
+                .setNegativeButton("はい", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        MyUtils.upload_tour(tour_id);
+                        Toast.makeText(DetailActivity.this, "アップロードしました。", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setPositiveButton("いいえ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(DetailActivity.this, "キャンセルされました。", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        builder.show();
     }
 }

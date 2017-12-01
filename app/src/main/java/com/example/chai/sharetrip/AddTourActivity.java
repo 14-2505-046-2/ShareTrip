@@ -15,7 +15,6 @@ public class AddTourActivity extends AppCompatActivity  implements TripListFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tour);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -23,6 +22,10 @@ public class AddTourActivity extends AppCompatActivity  implements TripListFragm
 
         mRealm = Realm.getDefaultInstance();
         showTourList();
+
+        if(getIntent().getBooleanExtra("is_add", false)) {
+            onAddTourSelected();
+        }
     }
 
     private void showTourList() {

@@ -11,12 +11,15 @@ import android.view.ViewGroup;
 import android.util.Log;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.log.LogLevel;
 
 public class TripDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Realm mRealm;
+    public long tour_id_now;
 
     public TripDetailFragment() {
         // Required empty public constructor
@@ -48,8 +51,30 @@ public class TripDetailFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(llm);
-        Log.d("tour_id", DetailActivity.TOUR_ID);
-        RealmResults<Route> routes = mRealm.where(Route.class).equalTo("tour_id", DetailActivity.tour_id).findAll();
+
+        Tour tour = mRealm.where(Tour.class).equalTo("tour_id", DetailActivity.tour_id).findFirst();
+        tour_id_now = -tour.tour_id;
+        Boolean local_flag = false;
+        if(tour.objectId.equals("local_data")) {
+            local_flag = true;
+            if(mRealm.where(Route.class).equalTo("route_id", tour_id_now).findAll().isEmpty()) {
+                mRealm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        Route route = realm.createObject(Route.class, tour_id_now);
+                        Log.d("add_button", String.valueOf(tour_id_now));
+                    }
+                });
+            }
+        }
+
+        RealmQuery query = mRealm.where(Route.class).equalTo("tour_id", DetailActivity.tour_id);
+        if(local_flag) {
+            query = query.or();
+            query = query.equalTo("route_id", tour_id_now);
+        }
+        RealmResults<Route> routes = query.findAll();
+
         Log.d("tour_id", String.valueOf(routes.size()));
         RouteRealmAdapter adapter = new RouteRealmAdapter(getActivity(), routes, true);
         recyclerView.setAdapter(adapter);

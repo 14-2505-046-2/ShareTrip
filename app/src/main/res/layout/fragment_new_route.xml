@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.chai.sharetrip.NewTourFragment">
+    tools:context="com.example.chai.sharetrip.NewRouteFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -54,5 +54,6 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

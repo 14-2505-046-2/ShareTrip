@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import io.realm.Realm;
@@ -16,6 +17,7 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
     public static final String TOUR_ID = "TOUR_ID";
     public static long tour_id;
     private static final long ERR_CD = -1;
+    Realm mRealm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         tour_id = intent.getLongExtra(TOUR_ID, ERR_CD);
         showDetailList();
         change_title();
+        mRealm = Realm.getDefaultInstance();
     }
 
     private void change_title() {
@@ -48,5 +51,23 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
     @Override
     public void onAddTourSelected() {
         //新規ルート追加処理をここに
+    }
+
+    public void onClickAddRouteActivityButton(View v) {
+
+        mRealm.beginTransaction();
+        Number maxId = mRealm.where(Route.class).max("route_id");
+        long nextId = 1;
+        if(maxId != null) nextId = maxId.longValue() + 1;
+        Route route = mRealm.createObject(Route.class, new Long(nextId));
+        route.tour_id = tour_id;
+        mRealm.commitTransaction();
+
+        NewRouteFragment newRouteFragment = NewRouteFragment.newInstance(nextId);
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.content, newRouteFragment, "NewRouteFragment");
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

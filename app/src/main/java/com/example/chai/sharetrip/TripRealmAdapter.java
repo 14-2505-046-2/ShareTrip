@@ -78,6 +78,8 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
                                 Tour tour = getData().get(position);
                                 Realm realm = Realm.getDefaultInstance();
                                 realm.beginTransaction();
+                                RealmResults results = realm.where(Route.class).equalTo("tour_id", tour.tour_id).findAll();
+                                results.deleteAllFromRealm();
                                 tour.deleteFromRealm();
                                 realm.commitTransaction();
                                 Toast.makeText(context, "削除しました。", Toast.LENGTH_SHORT).show();

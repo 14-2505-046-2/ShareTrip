@@ -65,7 +65,7 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         //新規ルート追加
         mRealm.beginTransaction();
         Number maxId = mRealm.where(Route.class).max("route_id");
-        long nextId = 1;
+        long nextId = 0;
         if(maxId != null) nextId = maxId.longValue() + 1;
         Route route = mRealm.createObject(Route.class, new Long(nextId));
         route.tour_id = tour_id;
@@ -73,9 +73,9 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Route delete_route = realm.where(Route.class).equalTo("route_id", TripDetailFragment.ADDROUTE).findFirst();
+                Route delete_route = realm.where(Route.class).equalTo("route_id", MyUtils.ADDROUTE).findFirst();
                 delete_route.deleteFromRealm();
-                Route route = realm.createObject(Route.class, TripDetailFragment.ADDROUTE);
+                Route route = realm.createObject(Route.class, MyUtils.ADDROUTE);
             }
         });
 

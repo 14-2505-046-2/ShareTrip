@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 
 /**
@@ -30,6 +32,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         protected ImageView photo;
         protected ImageView icon;
         protected ImageButton add_route_button;
+        protected ImageButton delete;
 
         public TripViewHolder(View itemView) {
             super(itemView);
@@ -40,6 +43,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             photo = (ImageView) itemView.findViewById(R.id.photo);
             icon = (ImageView) itemView.findViewById(R.id.icon);
             add_route_button = (ImageButton) itemView.findViewById(R.id.add_route_button);
+            delete = (ImageButton) itemView.findViewById(R.id.delete);
         }
     }
 
@@ -52,6 +56,19 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
     public TripViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.trip_detail_card_layout, parent, false);
         final TripViewHolder holder = new TripViewHolder(itemView);
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Route route = getData().get(position);
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                route.deleteFromRealm();
+                realm.commitTransaction();
+                MyUtils.reload_add();
+                Toast.makeText(context, "削除しました。", Toast.LENGTH_SHORT).show();
+            }
+        });
         return holder;
     }
 
@@ -95,9 +112,16 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
                         break;
                 }
             }
+
+            Realm realm = Realm.getDefaultInstance();
+            Tour tour = realm.where(Tour.class).equalTo("tour_id", route.tour_id).findFirst();
+            if(tour.objectId.equals("local_data")) {
+                holder.delete.setVisibility(View.VISIBLE);
+            }
         }
-        else if(route.route_id == TripDetailFragment.ADDROUTE) {
+        else if(route.route_id == MyUtils.ADDROUTE) {
             holder.add_route_button.setVisibility(View.VISIBLE);
+            holder.delete.setVisibility(View.INVISIBLE);
         }
     }
 }

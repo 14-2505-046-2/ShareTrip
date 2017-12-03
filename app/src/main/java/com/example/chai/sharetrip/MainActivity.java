@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        createTestData();
+        //createTestData();
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(), "041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
             public void execute(Realm realm) {
                 //Tourデータの作成。tour_idになるnextIdはRouteクラスでも使う。
                 Number maxId = mRealm.where(Tour.class).max("tour_id");
-                long nextId = 1;
+                long nextId = 0;
                 if (maxId != null) nextId = maxId.longValue() + 1;
                 Tour tour = realm.createObject(Tour.class, new Long(nextId));
                 tour.tour_title = "宇部満喫旅行(test)";

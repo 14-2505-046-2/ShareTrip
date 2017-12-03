@@ -31,9 +31,11 @@ public class AddTourActivity extends AppCompatActivity  implements TripListFragm
     private void showTourList() {
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentByTag("TripListFragment");
-        TripListFragment.tour_id = "MyTour";
         if (fragment == null) {
             fragment = new TripListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", "MyTour");
+            fragment.setArguments(bundle);
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.addTourContent, fragment, "TripListFragment");
             transaction.commit();

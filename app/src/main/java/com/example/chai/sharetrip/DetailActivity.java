@@ -28,7 +28,7 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         setContentView(R.layout.activity_detail);
         Intent intent = getIntent();
         tour_id = intent.getLongExtra(TOUR_ID, ERR_CD);
-        showDetailList();;
+        showDetailList();
         change_title();
         mRealm = Realm.getDefaultInstance();
         Tour tour = mRealm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();

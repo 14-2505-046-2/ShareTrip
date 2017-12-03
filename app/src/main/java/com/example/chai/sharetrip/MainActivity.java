@@ -33,6 +33,9 @@ import io.realm.Realm;
 public class MainActivity extends AppCompatActivity implements TripListFragment.OnFragmentInteractionListener {
 
     private Realm mRealm;
+    private String tour_id = "all";
+    private String area = "全て";
+    private long time = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
 
         mRealm = Realm.getDefaultInstance();
         //次の行コメントアウトで起動のたびテストデータが生成されます。 -> p179
-        //createTestData();
+        createTestData();
 
         //データベースサーバー使用のため
         NCMB.initialize(this.getApplicationContext(), "041e08f3646a44378c5175408afdedae4eae181550e1f9c225b6951e11870797", "684e732244c930d72c1a10292444b8a2abd285439ac2d4ba70198811ae7c450a");
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                                        View view, int position, long id) {
                 Spinner spinner = (Spinner)parent;
                 String item = (String)spinner.getSelectedItem();
-                TripListFragment.area = item;
+                area = item;
                 showTourList();
             }
 
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 Spinner spinner = (Spinner)parent;
                 long item = (long)spinner.getSelectedItemId();
 
-                TripListFragment.time = item;
+                time = item;
                 showTourList();
             }
 
@@ -182,11 +185,25 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         Fragment fragment = manager.findFragmentByTag("TripListFragment");
         if (fragment == null) {
             fragment = new TripListFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("id", tour_id);
+            bundle.putLong("time", time);
+            bundle.putString("area", area);
+            fragment.setArguments(bundle);
+
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.content, fragment, "TripListFragment");
             transaction.commit();
         } else {
             fragment = new TripListFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("id", tour_id);
+            bundle.putLong("time", time);
+            bundle.putString("area", area);
+            fragment.setArguments(bundle);
+
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.content, fragment, "TripListFragment");
             transaction.commit();
@@ -217,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     Log.d("Search", "push");
-                    TripListFragment.tour_id = text;
+                    tour_id = text;
                     showTourList();
                     return true;
                 }
@@ -239,13 +256,14 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         startActivity(intent);
     }
 
+    //検索バー横の検索ボタン
     public void onClickSearchButton(View v) {
         final EditText editText = (EditText) findViewById(R.id.editText);
         String text = editText.getText().toString();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         Log.d("Search", "push");
-        TripListFragment.tour_id = text;
+        tour_id = text;
 
         final RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
         search_bar.setVisibility(View.GONE);
@@ -262,10 +280,10 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         else {
             search_bar.setVisibility(View.GONE);
         }
-        if(TripListFragment.tour_id.equals("MyTour")) {
+        if(tour_id.equals("MyTour")) {
             final EditText editText = (EditText) findViewById(R.id.editText);
             String text = editText.getText().toString();
-            TripListFragment.tour_id = text;
+            tour_id = text;
             reTitle();
             showTourList();
         }
@@ -275,20 +293,20 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
     public void onClickMyTour(View v) {
         RelativeLayout search_bar = (RelativeLayout)findViewById(R.id.search_bar);
         ImageButton button = (ImageButton)findViewById(R.id.myTour);
-        if(!TripListFragment.tour_id.equals("MyTour")) {
-            TripListFragment.tour_id = "MyTour";
+        if(!tour_id.equals("MyTour")) {
+            tour_id = "MyTour";
             search_bar.setVisibility(View.GONE);
             TextView title = (TextView)findViewById(R.id.title);
             title.setText("マイツアー");
         }
         else {
-            TripListFragment.tour_id = "";
+            tour_id = "";
             reTitle();
         }
         showTourList();
     }
 
-    //近くのルートに書き換えるだけ。
+    //近くのルートに書き換えるだけ。(使われてない)
     public void reTitle() {
         String text = "";
         TextView title = (TextView)findViewById(R.id.title);

@@ -24,9 +24,9 @@ public class TripListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Realm mRealm;
 
-    public static String tour_id = "all";
-    public static String area = "全て";
-    public static long time = 0;
+    private String tour_id = "all";
+    private String area = "全て";
+    private long time = 0;
 
     public TripListFragment() {
 
@@ -52,6 +52,11 @@ public class TripListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = getArguments();
+        tour_id = bundle.getString("id", "all");
+        time = bundle.getLong("time", 0);
+        area = bundle.getString("area", "全て");
+
         View v = inflater.inflate(R.layout.fragment_trip_list, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());

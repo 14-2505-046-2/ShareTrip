@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
 
@@ -25,8 +27,6 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
 
     Context context;
 
-    public RealmResults<Tour> tours;
-
     public static class TripViewHolder extends RecyclerView.ViewHolder {
         protected TextView title;
         protected TextView author;
@@ -34,6 +34,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         protected TextView start;
         protected TextView total;
         protected ImageView photo;
+        protected ImageButton delete;
 
         public TripViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +44,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
             start = (TextView) itemView.findViewById(R.id.start_time);
             total = (TextView) itemView.findViewById(R.id.total_time);
             photo = (ImageView) itemView.findViewById(R.id.trip_photo);
+            delete = (ImageButton) itemView.findViewById(R.id.delete);
         }
     }
 
@@ -56,6 +58,17 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tripcard_layout, parent, false);
         final TripViewHolder holder = new TripViewHolder(itemView);
 
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Tour tour = getData().get(position);
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                tour.deleteFromRealm();
+                realm.commitTransaction();
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +102,9 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
             */
             Bitmap bitmap = MyUtils.getImageFromByte(tour.image);
             holder.photo.setImageBitmap(bitmap);
+        }
+        if(tour.objectId.equals("local_data")) {
+            holder.delete.setVisibility(View.VISIBLE);
         }
     }
 }

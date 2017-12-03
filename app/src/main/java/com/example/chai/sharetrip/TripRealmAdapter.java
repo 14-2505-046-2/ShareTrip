@@ -1,9 +1,14 @@
 package com.example.chai.sharetrip;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +18,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
+
+import static com.example.chai.sharetrip.DetailActivity.tour_id;
 
 /**
  * Created by enPiT-P22 on 2017/11/04.
@@ -61,12 +69,26 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = holder.getAdapterPosition();
-                Tour tour = getData().get(position);
-                Realm realm = Realm.getDefaultInstance();
-                realm.beginTransaction();
-                tour.deleteFromRealm();
-                realm.commitTransaction();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("このツアーを削除しますか\nアップロードしたツアーは消えません。")
+                        .setTitle("ツアーの削除")
+                        .setNegativeButton("はい", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                int position = holder.getAdapterPosition();
+                                Tour tour = getData().get(position);
+                                Realm realm = Realm.getDefaultInstance();
+                                realm.beginTransaction();
+                                tour.deleteFromRealm();
+                                realm.commitTransaction();
+                                Toast.makeText(context, "削除しました。", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setPositiveButton("いいえ", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(context, "キャンセルされました。", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                builder.show();
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +97,6 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
                 int position = holder.getAdapterPosition();
                 Tour tour = getData().get(position);
                 long tourId = tour.tour_id;
-
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra(DetailActivity.TOUR_ID, tourId);
                 context.startActivity(intent);

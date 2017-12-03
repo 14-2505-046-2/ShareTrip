@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickUploadButton"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:srcCompat="@android:drawable/ic_menu_upload" />
         </LinearLayout>
 

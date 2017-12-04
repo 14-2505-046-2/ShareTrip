@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.chai.sharetrip.NewTourFragment">
+    tools:context="com.example.chai.sharetrip.NewRouteFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -39,21 +39,21 @@
         android:id="@+id/textInputLayout">
 
         <EditText
-            android:id="@+id/editTitle"
+            android:id="@+id/editText3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:singleLine="true" />
+            android:hint="hint" />
     </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:text="TextView"
         android:layout_marginTop="8dp"
-        android:text="ツアータイトル"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

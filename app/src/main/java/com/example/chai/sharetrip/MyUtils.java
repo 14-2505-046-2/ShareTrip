@@ -29,6 +29,7 @@ import io.realm.RealmResults;
 public class MyUtils {
     public static ArrayList<Long> list = new ArrayList<Long>();
     public static boolean is_test = true;//テストの間はtrueで。（upload用)
+    public static final long ADDROUTE = -1;
 
     //byte型配列からBitmapインスタンスへの変換　-> p314
     public static Bitmap getImageFromByte(byte[] bytes) {
@@ -329,5 +330,25 @@ public class MyUtils {
         } catch (NCMBException e) {
             Log.e("delete_test", e.toString());
         }
+    }
+
+    public static void reload_add() {
+        final Realm mRealm = Realm.getDefaultInstance();
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (!mRealm.where(Route.class).equalTo("route_id", ADDROUTE).findAll().isEmpty()) {
+                    Route delete_route = realm.where(Route.class).equalTo("route_id", ADDROUTE).findFirst();
+                    delete_route.deleteFromRealm();
+                }
+            }
+        });
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Route route = realm.createObject(Route.class, ADDROUTE);
+                Log.d("add_button", String.valueOf(ADDROUTE));
+            }
+        });
     }
 }

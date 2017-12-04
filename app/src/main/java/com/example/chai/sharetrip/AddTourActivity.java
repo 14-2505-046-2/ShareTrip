@@ -15,7 +15,6 @@ public class AddTourActivity extends AppCompatActivity  implements TripListFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tour);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -23,14 +22,20 @@ public class AddTourActivity extends AppCompatActivity  implements TripListFragm
 
         mRealm = Realm.getDefaultInstance();
         showTourList();
+
+        if(getIntent().getBooleanExtra("is_add", false)) {
+            onAddTourSelected();
+        }
     }
 
     private void showTourList() {
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentByTag("TripListFragment");
-        TripListFragment.tour_id = "MyTour";
         if (fragment == null) {
             fragment = new TripListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", "MyTour");
+            fragment.setArguments(bundle);
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.addTourContent, fragment, "TripListFragment");
             transaction.commit();

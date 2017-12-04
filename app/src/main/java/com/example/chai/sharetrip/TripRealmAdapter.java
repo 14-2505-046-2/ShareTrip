@@ -25,8 +25,6 @@ import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
 
-import static com.example.chai.sharetrip.DetailActivity.tour_id;
-
 /**
  * Created by enPiT-P22 on 2017/11/04.
  */

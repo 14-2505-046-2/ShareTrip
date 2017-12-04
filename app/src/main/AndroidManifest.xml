@@ -9,6 +9,9 @@
     <!-- http通信のため -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- ストレージへのアクセス -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <!-- クラスを実行させるために追加。 -->
     <application
         android:name=".ShareTripApplication"

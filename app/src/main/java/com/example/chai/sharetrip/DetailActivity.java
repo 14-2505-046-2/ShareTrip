@@ -63,6 +63,7 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
 
     public void onClickAddRouteActivityButton(View v) {
         //新規ルート追加
+        /*
         mRealm.beginTransaction();
         Number maxId = mRealm.where(Route.class).max("route_id");
         long nextId = 0;
@@ -78,8 +79,9 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
                 Route route = realm.createObject(Route.class, MyUtils.ADDROUTE);
             }
         });
+        */
 
-        NewRouteFragment newRouteFragment = NewRouteFragment.newInstance(nextId);
+        NewRouteFragment newRouteFragment = NewRouteFragment.newInstance(tour_id);//nextId);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.content, newRouteFragment, "NewRouteFragment");

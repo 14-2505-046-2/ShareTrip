@@ -24,6 +24,17 @@
         <item>柳井市</item>
         <item>岩国市</item>
     </string-array>
+
+    <string-array name="means">
+        <item>徒歩</item>
+        <item>自転車</item>
+        <item>自動車</item>
+        <item>バス</item>
+        <item>電車</item>
+        <item>新幹線</item>
+        <item>飛行機</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_tour">AddTourActivity</string>

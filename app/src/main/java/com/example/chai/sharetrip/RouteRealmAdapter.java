@@ -3,7 +3,6 @@ package com.example.chai.sharetrip;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +38,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             name = (TextView) itemView.findViewById(R.id.name);
             start_time = (TextView) itemView.findViewById(R.id.start_time);
             end_time = (TextView) itemView.findViewById(R.id.end_time);
-            comment = (TextView) itemView.findViewById(R.id.comment);
+            comment = (TextView) itemView.findViewById(R.id.commentText);
             photo = (ImageView) itemView.findViewById(R.id.photo);
             icon = (ImageView) itemView.findViewById(R.id.icon);
             add_route_button = (ImageButton) itemView.findViewById(R.id.add_route_button);

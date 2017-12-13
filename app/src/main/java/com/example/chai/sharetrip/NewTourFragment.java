@@ -1,9 +1,19 @@
 package com.example.chai.sharetrip;
 
+import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +21,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.IOException;
+
 import io.realm.Realm;
+
+import static android.app.Activity.RESULT_OK;
 
 //教科書p305～を参考にしています。
 public class NewTourFragment extends Fragment /*implements View.OnClickListener*/{
@@ -33,6 +48,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
     private int startHour;
     private int startMinute;
     private View view;
+    private ImageView mImageView;
 
     public static NewTourFragment newInstance() {
         NewTourFragment fragment = new NewTourFragment();
@@ -62,13 +78,21 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
 
         mTimeText = (TextView) view.findViewById(R.id.startTimeText);
         Button save = (Button) view.findViewById(R.id.tourSaveButton);
+        mImageView = (ImageView) v.findViewById(R.id.tour_image);
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestReadStorage(view);
+            }
+        });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
                 mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
                 mCommentEdit = (EditText) view.findViewById(R.id.editComment);
-                Spinner area =(Spinner) view.findViewById(R.id.newTourArea);
+                Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
+                ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
 
                 mRealm.beginTransaction();
                 Number maxId = mRealm.where(Tour.class).max("tour_id");
@@ -80,6 +104,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                 tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
                 tour.comment = mCommentEdit.getText().toString();
                 tour.area = area.getSelectedItem().getClass().toString();
+                tour.image = MyUtils.getByteFromImage(((BitmapDrawable)imageView.getDrawable()).getBitmap());
                 mRealm.commitTransaction();
                 getFragmentManager().popBackStack();
             }
@@ -149,9 +174,69 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
         },hour, minute, true);
         dialog.show();
     }
-*/
+    */
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode,data);
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri uri = (data == null) ? null : data.getData();
+            if(uri != null) {
+                try {
+                    Bitmap img = MyUtils.getImageFromStream(
+                            getActivity().getContentResolver(), uri);
+                    mImageView.setImageBitmap(img);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void requestReadStorage(View view) {
+        if(ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if(shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Snackbar.make(view,R.string.rationale,
+                        Snackbar.LENGTH_LONG).show();
+            }
+
+            requestPermissions(new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, PERMISSION_REQUEST_CODE);
+
+        } else {
+            pickImage();
+        }
+    }
+
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(
+                Intent.createChooser(
+                        intent,
+                        getString(R.string.pick_image)
+                ),
+                REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if(requestCode == PERMISSION_REQUEST_CODE) {
+            if(grantResults.length != 1 ||
+                    grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Snackbar.make(mImageView, R.string.permission_deny,
+                        Snackbar.LENGTH_LONG).show();
+
+            } else {
+                pickImage();
+            }
+        }
     }
 }

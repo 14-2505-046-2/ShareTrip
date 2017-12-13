@@ -76,6 +76,69 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
         //Button btn = (Button)v.findViewById(R.id.startTimeButton);
         //btn.setOnClickListener(this);
 
+        Bundle bundle = getArguments();
+        final long tour_id = bundle.getLong("id", -2);
+        //ツアーの編集の場合。
+        if(tour_id > 0) {
+            Tour selected_tour = mRealm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();
+            mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
+            mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
+            mCommentEdit = (EditText) view.findViewById(R.id.editComment);
+            Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
+            ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
+            TextView startTime = (TextView) view.findViewById(R.id.startTimeText);
+
+            mTitleEdit.setText(selected_tour.tour_title);
+            mTotalTimeEdit.setText(String.valueOf(selected_tour.total_time));
+            mCommentEdit.setText(selected_tour.comment);
+
+            int index = 0;
+            switch (selected_tour.area) {
+                case "下関市":
+                    index = 0;
+                    break;
+                case "山陽小野田市":
+                    index = 1;
+                    break;
+                case "宇部市":
+                    index = 2;
+                    break;
+                case "美祢市":
+                    index = 3;
+                    break;
+                case "山口市":
+                    index = 4;
+                    break;
+                case "長門市":
+                    index = 5;
+                    break;
+                case "萩市":
+                    index = 6;
+                    break;
+                case "防府市":
+                    index = 7;
+                    break;
+                case "下松市":
+                    index = 8;
+                    break;
+                case "光市":
+                    index = 9;
+                    break;
+                case "周南市":
+                    index = 10;
+                    break;
+                case "柳井市":
+                    index = 11;
+                    break;
+                case "岩国市":
+                    index = 12;
+                    break;
+            }
+            area.setSelection(index);
+            imageView.setImageBitmap(MyUtils.getImageFromByte(selected_tour.image));
+            startTime.setText(selected_tour.start_time);
+        }
+
         mTimeText = (TextView) view.findViewById(R.id.startTimeText);
         Button save = (Button) view.findViewById(R.id.tourSaveButton);
         mImageView = (ImageView) v.findViewById(R.id.tour_image);
@@ -85,31 +148,52 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                 requestReadStorage(view);
             }
         });
+        Button timeButton = (Button) v.findViewById(R.id.startTimeButton);
+        Spinner spinner_area = (Spinner)v.findViewById(R.id.newTourArea);
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
-                mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
-                mCommentEdit = (EditText) view.findViewById(R.id.editComment);
-                Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
-                ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
+                if(tour_id < 0) {
+                    mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
+                    mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
+                    mCommentEdit = (EditText) view.findViewById(R.id.editComment);
+                    Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
+                    ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
 
-                mRealm.beginTransaction();
-                Number maxId = mRealm.where(Tour.class).max("tour_id");
-                long nextId = 0;
-                if(maxId != null) nextId = maxId.longValue() + 1;
-                Tour tour = mRealm.createObject(Tour.class, new Long(nextId));
-                tour.tour_title = mTitleEdit.getText().toString();
-                tour.start_time = mTimeText.getText().toString();
-                tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
-                tour.comment = mCommentEdit.getText().toString();
-                tour.area = area.getSelectedItem().getClass().toString();
-                tour.image = MyUtils.getByteFromImage(((BitmapDrawable)imageView.getDrawable()).getBitmap());
-                mRealm.commitTransaction();
-                getFragmentManager().popBackStack();
+                    mRealm.beginTransaction();
+                    Number maxId = mRealm.where(Tour.class).max("tour_id");
+                    long nextId = 0;
+                    if (maxId != null) nextId = maxId.longValue() + 1;
+                    Tour tour = mRealm.createObject(Tour.class, new Long(nextId));
+                    tour.tour_title = mTitleEdit.getText().toString();
+                    tour.start_time = mTimeText.getText().toString();
+                    tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
+                    tour.comment = mCommentEdit.getText().toString();
+                    tour.area = area.getSelectedItem().getClass().toString();
+                    tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    mRealm.commitTransaction();
+                    getFragmentManager().popBackStack();
+                }else {
+                    mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
+                    mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
+                    mCommentEdit = (EditText) view.findViewById(R.id.editComment);
+                    Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
+                    ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
+
+                    mRealm.beginTransaction();
+                    Tour tour = mRealm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();
+                    tour.tour_title = mTitleEdit.getText().toString();
+                    tour.start_time = mTimeText.getText().toString();
+                    tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
+                    tour.comment = mCommentEdit.getText().toString();
+                    tour.area = area.getSelectedItem().getClass().toString();
+                    tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    mRealm.commitTransaction();
+                    getFragmentManager().popBackStack();
+                }
             }
         });
-        Button timeButton = (Button) v.findViewById(R.id.startTimeButton);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +216,6 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
         Log.d("title","log");
 
 
-        Spinner spinner_area = (Spinner)v.findViewById(R.id.newTourArea);
         spinner_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             //　アイテムが選択された時
             @Override

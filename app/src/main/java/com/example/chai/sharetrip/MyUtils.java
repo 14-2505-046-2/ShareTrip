@@ -228,7 +228,7 @@ public class MyUtils {
             obj.put("rough_time", 2);
         }
         else {
-            obj.put("rough_time", 2);
+            obj.put("rough_time", 3);
         }
 
         try {

@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,7 @@ import io.realm.RealmResults;
 
 public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAdapter.TripViewHolder>{
 
-    Context context;
+    private Context context;
 
     public static class TripViewHolder extends RecyclerView.ViewHolder {
         protected TextView title;
@@ -41,6 +43,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         protected TextView total;
         protected ImageView photo;
         protected ImageButton delete;
+        protected ImageButton edit;
 
         public TripViewHolder(View itemView) {
             super(itemView);
@@ -51,6 +54,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
             total = (TextView) itemView.findViewById(R.id.total_time);
             photo = (ImageView) itemView.findViewById(R.id.trip_photo);
             delete = (ImageButton) itemView.findViewById(R.id.delete);
+            edit = (ImageButton) itemView.findViewById(R.id.edit);
         }
     }
 
@@ -61,7 +65,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
 
     @Override
     public TripViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tripcard_layout, parent, false);
+        final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tripcard_layout, parent, false);
         final TripViewHolder holder = new TripViewHolder(itemView);
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +95,30 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
                 builder.show();
             }
         });
+
+
+        //編集時呼び出される。
+        holder.edit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Tour tour = getData().get(position);
+
+                NewTourFragment newTourFragment = NewTourFragment.newInstance();
+                FragmentManager manager = ((AddTourActivity)context).getSupportFragmentManager();
+                Bundle bundle = new Bundle();
+                bundle.putLong("id", tour.tour_id);
+                newTourFragment.setArguments(bundle);
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.addTourContent,newTourFragment,"NewTourFragment");
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
+
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +154,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         }
         if(tour.objectId.equals("local_data")) {
             holder.delete.setVisibility(View.VISIBLE);
+            holder.edit.setVisibility(View.VISIBLE);
         }
     }
 }

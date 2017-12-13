@@ -113,7 +113,6 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
                 transaction.replace(R.id.addTourContent,newTourFragment,"NewTourFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
-
             }
         });
 

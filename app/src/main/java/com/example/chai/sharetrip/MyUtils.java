@@ -347,6 +347,7 @@ public class MyUtils {
             @Override
             public void execute(Realm realm) {
                 Route route = realm.createObject(Route.class, ADDROUTE);
+                route.tour_id = -1;
                 Log.d("add_button", String.valueOf(ADDROUTE));
             }
         });

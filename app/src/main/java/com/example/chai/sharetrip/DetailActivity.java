@@ -81,11 +81,15 @@ public class DetailActivity extends AppCompatActivity implements TripDetailFragm
         });
         */
 
-        NewRouteFragment newRouteFragment = NewRouteFragment.newInstance(tour_id);//nextId);
+        NewRouteFragment newRouteFragment = NewRouteFragment.newInstance();//nextId);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.content, newRouteFragment, "NewRouteFragment");
         transaction.addToBackStack(null);
+        Bundle bundle = new Bundle();
+        bundle.putLong("route_id", -2);
+        bundle.putLong("tour_id", tour_id);
+        newRouteFragment.setArguments(bundle);
         transaction.commit();
     }
 

@@ -2,6 +2,7 @@ package com.example.chai.sharetrip;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,7 +66,6 @@ public class TripDetailFragment extends Fragment {
         }
         RealmResults<Route> routes = query.findAll();
 
-        Log.d("tour_id", String.valueOf(routes.size()));
         RouteRealmAdapter adapter = new RouteRealmAdapter(getActivity(), routes, true);
         recyclerView.setAdapter(adapter);
         return v;

@@ -47,21 +47,16 @@ public class NewRouteFragment extends Fragment implements View.OnClickListener {
     private Realm mRealm;
     private View view;
     private ImageView mImageView;
+    private long route_id = -2;
 
-    public static NewRouteFragment newInstance(long TourId) {
+    public static NewRouteFragment newInstance() {
         NewRouteFragment fragment = new NewRouteFragment();
-        Bundle args = new Bundle();
-        args.putLong(TOUR_ID, TourId);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            tour_id = getArguments().getLong(TOUR_ID);
-        }
         mRealm = Realm.getDefaultInstance();
     }
 
@@ -77,6 +72,43 @@ public class NewRouteFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_new_route,container, false);
         view = v;
+        Bundle bundle = getArguments();
+        tour_id = bundle.getLong("tour_id", -2);
+        route_id = bundle.getLong("route_id", -2);
+        RadioGroup radioGroup = (RadioGroup)v.findViewById(R.id.radioGroup);
+        if(route_id > 0) {
+            Route selected_route = mRealm.where(Route.class).equalTo("route_id", route_id).findFirst();
+            ScrollView scrollView_area = (ScrollView) v.findViewById(R.id.scrollView_area);
+            ScrollView scrollView_means = (ScrollView) v.findViewById(R.id.scrollView_means);
+            if(selected_route.flag_area) {
+                EditText name  = (EditText) view.findViewById(R.id.route_title);
+                ImageView image = (ImageView) view.findViewById(R.id.route_image);
+                EditText link = (EditText) view.findViewById(R.id.editText_link);
+                EditText comment = (EditText) view.findViewById(R.id.comment_area);
+
+                scrollView_means.setVisibility(View.GONE);
+                scrollView_area.setVisibility(View.VISIBLE);
+                radioGroup.check(R.id.radioButton_area);
+                name.setText(selected_route.name);
+                image.setImageBitmap(MyUtils.getImageFromByte(selected_route.image));
+                link.setText(selected_route.link);
+                comment.setText(selected_route.comment);
+            }
+            else {
+                Spinner means = (Spinner) view.findViewById(R.id.spinner_means);
+                TextView start_time_view = (TextView) view.findViewById(R.id.start_time_view);
+                TextView end_time_view = (TextView) view.findViewById(R.id.end_time_view);
+                EditText comment = (EditText) view.findViewById(R.id.comment_means);
+
+                scrollView_area.setVisibility(View.GONE);
+                scrollView_means.setVisibility(View.VISIBLE);
+                radioGroup.check(R.id.radioButton_means);
+                means.setSelection(selected_route.means);
+                start_time_view.setText(selected_route.start_time);
+                end_time_view.setText(selected_route.end_time);
+                comment.setText(selected_route.comment);
+            }
+        }
         EditText editText = (EditText)v.findViewById(R.id.route_title);
         mImageView = (ImageView) v.findViewById(R.id.route_image);
         editText.addTextChangedListener(new TextWatcher() {
@@ -95,7 +127,6 @@ public class NewRouteFragment extends Fragment implements View.OnClickListener {
                 Log.d("eeeeee", "after");
             }
         });
-        RadioGroup radioGroup = (RadioGroup)v.findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
@@ -170,23 +201,27 @@ public class NewRouteFragment extends Fragment implements View.OnClickListener {
             dialog.show();
         } else if (v == v.findViewById(R.id.add_area) || v == v.findViewById(R.id.add_means)) {
             mRealm.beginTransaction();
-            Number maxId = mRealm.where(Route.class).max("route_id");
-            long nextId = 0;
-            if (maxId != null) nextId = maxId.longValue() + 1;
-            Route route = mRealm.createObject(Route.class, new Long(nextId));
-            route.tour_id = tour_id;
+            Route route;
+            if(route_id < 0) {
+                Number maxId = mRealm.where(Route.class).max("route_id");
+                long nextId = 0;
+                if (maxId != null) nextId = maxId.longValue() + 1;
+                route = mRealm.createObject(Route.class, new Long(nextId));
+                route.tour_id = tour_id;
+            }else {
+                route = mRealm.where(Route.class).equalTo("route_id", route_id).findFirst();
+            }
             if(v == v.findViewById(R.id.add_area)) {
-                    EditText name  = (EditText) view.findViewById(R.id.route_title);
-                    ImageView image = (ImageView) view.findViewById(R.id.route_image);
-                    EditText link = (EditText) view.findViewById(R.id.editText_link);
-                    EditText comment = (EditText) view.findViewById(R.id.comment_area);
+                EditText name  = (EditText) view.findViewById(R.id.route_title);
+                ImageView image = (ImageView) view.findViewById(R.id.route_image);
+                EditText link = (EditText) view.findViewById(R.id.editText_link);
+                EditText comment = (EditText) view.findViewById(R.id.comment_area);
 
-                    route.tour_id = tour_id;
-                    route.flag_area = true;
-                    route.name = name.getText().toString();
-                    route.image = MyUtils.getByteFromImage(((BitmapDrawable)image.getDrawable()).getBitmap());
-                    route.link = link.getText().toString();
-                    route.comment = comment.getText().toString();
+                route.flag_area = true;
+                route.name = name.getText().toString();
+                route.image = MyUtils.getByteFromImage(((BitmapDrawable)image.getDrawable()).getBitmap());
+                route.link = link.getText().toString();
+                route.comment = comment.getText().toString();
             }
             else {
                 Spinner means = (Spinner) view.findViewById(R.id.spinner_means);
@@ -194,6 +229,7 @@ public class NewRouteFragment extends Fragment implements View.OnClickListener {
                 TextView end_time_view = (TextView) view.findViewById(R.id.end_time_view);
                 EditText comment = (EditText) view.findViewById(R.id.comment_means);
 
+                route.flag_area = false;
                 route.means = (int)means.getSelectedItemId();
                 route.start_time = start_time_view.getText().toString();
                 route.end_time = end_time_view.getText().toString();

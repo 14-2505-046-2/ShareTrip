@@ -93,45 +93,46 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
             mCommentEdit.setText(selected_tour.comment);
 
             int index = 0;
+            Log.e("eeeeeee", selected_tour.area);
             switch (selected_tour.area) {
                 case "下関市":
-                    index = 0;
-                    break;
-                case "山陽小野田市":
                     index = 1;
                     break;
-                case "宇部市":
+                case "山陽小野田市":
                     index = 2;
                     break;
-                case "美祢市":
+                case "宇部市":
                     index = 3;
                     break;
-                case "山口市":
+                case "美祢市":
                     index = 4;
                     break;
-                case "長門市":
+                case "山口市":
                     index = 5;
                     break;
-                case "萩市":
+                case "長門市":
                     index = 6;
                     break;
-                case "防府市":
+                case "萩市":
                     index = 7;
                     break;
-                case "下松市":
+                case "防府市":
                     index = 8;
                     break;
-                case "光市":
+                case "下松市":
                     index = 9;
                     break;
-                case "周南市":
+                case "光市":
                     index = 10;
                     break;
-                case "柳井市":
+                case "周南市":
                     index = 11;
                     break;
-                case "岩国市":
+                case "柳井市":
                     index = 12;
+                    break;
+                case "岩国市":
+                    index = 13;
                     break;
             }
             area.setSelection(index);
@@ -170,7 +171,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     tour.start_time = mTimeText.getText().toString();
                     tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
                     tour.comment = mCommentEdit.getText().toString();
-                    tour.area = area.getSelectedItem().getClass().toString();
+                    tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
                     mRealm.commitTransaction();
                     getFragmentManager().popBackStack();
@@ -187,7 +188,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     tour.start_time = mTimeText.getText().toString();
                     tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
                     tour.comment = mCommentEdit.getText().toString();
-                    tour.area = area.getSelectedItem().getClass().toString();
+                    tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
                     mRealm.commitTransaction();
                     getFragmentManager().popBackStack();

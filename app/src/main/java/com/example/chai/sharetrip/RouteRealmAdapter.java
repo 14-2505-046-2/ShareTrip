@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         protected TextView start_time;
         protected TextView end_time;
         protected TextView comment;
+        protected TextView means;
         protected ImageView photo;
         protected ImageView icon;
         protected ImageButton add_route_button;
@@ -44,6 +44,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             start_time = (TextView) itemView.findViewById(R.id.start_time);
             end_time = (TextView) itemView.findViewById(R.id.end_time);
             comment = (TextView) itemView.findViewById(R.id.commentText);
+            means = (TextView) itemView.findViewById(R.id.meansText);
             photo = (ImageView) itemView.findViewById(R.id.photo);
             icon = (ImageView) itemView.findViewById(R.id.icon);
             add_route_button = (ImageButton) itemView.findViewById(R.id.add_route_button);
@@ -108,6 +109,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             holder.comment.setText(String.valueOf(route.comment));
 
             if (route.flag_area) {
+                holder.icon.setVisibility(View.INVISIBLE);
                 if (route.image != null && route.image.length != 0) {
                     Bitmap bitmap = MyUtils.getImageFromByte(route.image);
                     holder.photo.setImageBitmap(bitmap);
@@ -117,24 +119,31 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
                 switch (route.means) {
                     case 0:
                         holder.icon.setImageResource(R.drawable.icon_walk);
+                        holder.means.setText("徒歩");
                         break;
                     case 1:
                         holder.icon.setImageResource(R.drawable.icon_bike);
+                        holder.means.setText("自転車");
                         break;
                     case 2:
                         holder.icon.setImageResource(R.drawable.icon_car);
+                        holder.means.setText("自動車");
                         break;
                     case 3:
                         holder.icon.setImageResource(R.drawable.icon_bus);
+                        holder.means.setText("バス");
                         break;
                     case 4:
                         holder.icon.setImageResource(R.drawable.icon_train);
+                        holder.means.setText("電車");
                         break;
                     case 5:
                         holder.icon.setImageResource(R.drawable.icon_bullet);
+                        holder.means.setText("新幹線");
                         break;
                     case 6:
                         holder.icon.setImageResource(R.drawable.icon_airplane);
+                        holder.means.setText("飛行機");
                         break;
                 }
             }

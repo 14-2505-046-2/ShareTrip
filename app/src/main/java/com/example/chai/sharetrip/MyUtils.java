@@ -30,6 +30,7 @@ public class MyUtils {
     public static ArrayList<Long> list = new ArrayList<Long>();
     public static boolean is_test = true;//テストの間はtrueで。（upload用)
     public static final long ADDROUTE = -1;
+    //public static final int LIMIT = 10;
 
     //byte型配列からBitmapインスタンスへの変換　-> p314
     public static Bitmap getImageFromByte(byte[] bytes) {
@@ -153,6 +154,7 @@ public class MyUtils {
         } else {
             //TestClassを検索するためのNCMBQueryインスタンスを作成
             NCMBQuery<NCMBObject> query = new NCMBQuery<>("Tour");
+            //query.setLimit(LIMIT);
             //wordに一致するものに絞る。
             if(!word.equals("all") && !word.equals("")) {
                 //検索キーワード

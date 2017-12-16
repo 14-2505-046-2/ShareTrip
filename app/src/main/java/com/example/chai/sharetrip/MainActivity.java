@@ -327,4 +327,8 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         TextView title = (TextView)findViewById(R.id.title);
         title.setText("近くのルート");
     }
+
+    public void onClickReloadButton(View v) {
+        showTourList();
+    }
 }

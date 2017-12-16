@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
                 tour.total_time = 8;
                 tour.upload_date = "２０１８年１１月１日";
                 tour.area = "宇部市";
+                tour.is_local = true;
                 Bitmap bitmap_tour = BitmapFactory.decodeResource(getResources(), R.drawable.icon_bike);
                 tour.image = MyUtils.getByteFromImage(bitmap_tour);
 

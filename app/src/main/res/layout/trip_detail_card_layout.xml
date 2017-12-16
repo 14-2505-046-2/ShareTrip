@@ -138,6 +138,8 @@
                 android:id="@+id/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -148,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/delete"
                 app:layout_constraintRight_toLeftOf="@+id/delete"
                 app:srcCompat="@android:drawable/ic_menu_edit" />
 
@@ -163,6 +165,18 @@
                 app:layout_constraintBottom_toTopOf="@+id/end_time"
                 app:layout_constraintLeft_toLeftOf="@+id/end_time"
                 app:layout_constraintRight_toLeftOf="@+id/name"
+                app:layout_constraintTop_toBottomOf="@+id/start_time" />
+
+            <Button
+                android:id="@+id/first_route_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="ここまでのルートを表示"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
                 app:layout_constraintTop_toBottomOf="@+id/start_time"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp" />

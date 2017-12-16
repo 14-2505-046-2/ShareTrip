@@ -1,7 +1,9 @@
 package com.example.chai.sharetrip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +28,8 @@ import io.realm.RealmRecyclerViewAdapter;
 
 public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteRealmAdapter.TripViewHolder> {
     Context context;
+    Route first_route;
+    Uri gmmIntentUri;
 
     public static class TripViewHolder extends RecyclerView.ViewHolder {
         protected TextView name;
@@ -37,6 +42,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         protected ImageButton add_route_button;
         protected ImageButton delete;
         protected ImageButton edit;
+        protected Button first_route_button;
 
         public TripViewHolder(View itemView) {
             super(itemView);
@@ -50,12 +56,17 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             add_route_button = (ImageButton) itemView.findViewById(R.id.add_route_button);
             delete = (ImageButton) itemView.findViewById(R.id.delete);
             edit = (ImageButton) itemView.findViewById(R.id.edit);
+            first_route_button = (Button) itemView.findViewById(R.id.first_route_button);
         }
     }
 
     public RouteRealmAdapter(@Nullable Context context, @Nullable OrderedRealmCollection<Route> data,boolean autoUpdate) {
         super(data, autoUpdate);
         this.context = context;
+        if(!data.isEmpty()) {
+            this.first_route = data.first();
+            gmmIntentUri = Uri.parse("geo:latitude,longitude?q=" + this.first_route.name);
+        }
     }
 
     @Override
@@ -95,6 +106,14 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
 
             }
         });
+        holder.first_route_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                context.startActivity(mapIntent);
+            }
+        });
 
         return holder;
     }
@@ -107,6 +126,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             holder.start_time.setText(route.start_time);
             holder.end_time.setText(route.end_time);
             holder.comment.setText(String.valueOf(route.comment));
+
 
             if (route.flag_area) {
                 holder.icon.setVisibility(View.INVISIBLE);
@@ -153,6 +173,10 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             if(tour.objectId.equals("local_data")) {
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.edit.setVisibility(View.VISIBLE);
+            }
+
+            if(route.route_id == first_route.route_id) {
+                holder.first_route_button.setVisibility(View.VISIBLE);
             }
         }
         else if(route.route_id == MyUtils.ADDROUTE) {

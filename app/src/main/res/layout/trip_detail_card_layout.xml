@@ -16,16 +16,21 @@
         android:background="#FBDADE"
         >
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="78dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="38dp"/>
-
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="160dp">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="1dp"
+                android:layout_height="70dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="0dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/photo"
+                app:layout_constraintLeft_toLeftOf="@+id/start_time"
+                app:layout_constraintTop_toBottomOf="@+id/start_time" />
 
             <ImageButton
                 android:id="@+id/icon"

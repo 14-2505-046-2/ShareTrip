@@ -93,7 +93,6 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
             mCommentEdit.setText(selected_tour.comment);
 
             int index = 0;
-            Log.e("eeeeeee", selected_tour.area);
             switch (selected_tour.area) {
                 case "下関市":
                     index = 1;

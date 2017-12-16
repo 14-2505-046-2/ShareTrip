@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
         //アップロードのテスト用。0は最初にtestデータを作成した場合テストデータをアップロード
         //MyUtils.upload_tour((long) 0);
         //アップロードしたテストの削除
-        MyUtils.delete_test();
+        //MyUtils.delete_test();
 
         showTourList();
 
@@ -115,12 +115,6 @@ public class MainActivity extends AppCompatActivity implements TripListFragment.
             }
         });
         set_title("近くの観光ルート");
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        showTourList();
     }
 
     private void set_title(String str) {

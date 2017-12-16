@@ -18,6 +18,7 @@ import com.nifty.cloud.mb.core.NCMBException;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 //p286-
 public class TripListFragment extends Fragment {
@@ -67,6 +68,7 @@ public class TripListFragment extends Fragment {
         Log.d("tour_id", tour_id);
         try {
             RealmResults<Tour> tours = MyUtils.getAllObjectId(tour_id, area, time);
+            tours = tours.sort("tour_id", Sort.DESCENDING);
             //RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
             TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
             recyclerView.setAdapter(adapter);

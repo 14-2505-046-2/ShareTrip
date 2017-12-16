@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -49,6 +49,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
     private int startMinute;
     private View view;
     private ImageView mImageView;
+    private CheckBox mIslocal;
 
     public static NewTourFragment newInstance() {
         NewTourFragment fragment = new NewTourFragment();
@@ -84,6 +85,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
             mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
             mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
             mCommentEdit = (EditText) view.findViewById(R.id.editComment);
+            mIslocal = (CheckBox) view.findViewById(R.id.is_localcheck);
             Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
             ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
             TextView startTime = (TextView) view.findViewById(R.id.startTimeText);
@@ -91,6 +93,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
             mTitleEdit.setText(selected_tour.tour_title);
             mTotalTimeEdit.setText(String.valueOf(selected_tour.total_time));
             mCommentEdit.setText(selected_tour.comment);
+            mIslocal.setChecked(selected_tour.is_local);
 
             int index = 0;
             Log.e("eeeeeee", selected_tour.area);
@@ -141,6 +144,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
         }
 
         mTimeText = (TextView) view.findViewById(R.id.startTimeText);
+
         Button save = (Button) view.findViewById(R.id.tourSaveButton);
         mImageView = (ImageView) v.findViewById(R.id.tour_image);
         mImageView.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +163,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
                     mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
                     mCommentEdit = (EditText) view.findViewById(R.id.editComment);
+                    mIslocal = (CheckBox) view.findViewById(R.id.is_localcheck);
                     Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
                     ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
 
@@ -173,12 +178,14 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     tour.comment = mCommentEdit.getText().toString();
                     tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    tour.is_local = mIslocal.isChecked();
                     mRealm.commitTransaction();
                     getFragmentManager().popBackStack();
                 }else {
                     mTitleEdit = (EditText) view.findViewById(R.id.editTitle);
                     mTotalTimeEdit = (EditText) view.findViewById(R.id.editTotalTime);
                     mCommentEdit = (EditText) view.findViewById(R.id.editComment);
+                    mIslocal = (CheckBox) view.findViewById(R.id.is_localcheck);
                     Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
                     ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
 
@@ -190,6 +197,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     tour.comment = mCommentEdit.getText().toString();
                     tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    tour.is_local = mIslocal.isChecked();
                     mRealm.commitTransaction();
                     getFragmentManager().popBackStack();
                 }

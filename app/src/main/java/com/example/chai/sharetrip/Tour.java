@@ -22,4 +22,5 @@ public class Tour extends RealmObject {
     public byte[] image;
     public String area;
     public String objectId = "local_data";
+    public boolean is_local = false;
 }

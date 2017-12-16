@@ -50,6 +50,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
     private View view;
     private ImageView mImageView;
     private CheckBox mIslocal;
+    private EditText auther_txt;
 
     public static NewTourFragment newInstance() {
         NewTourFragment fragment = new NewTourFragment();
@@ -89,11 +90,13 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
             Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
             ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
             TextView startTime = (TextView) view.findViewById(R.id.startTimeText);
+            auther_txt = (EditText) view.findViewById(R.id.auther_txt);
 
             mTitleEdit.setText(selected_tour.tour_title);
             mTotalTimeEdit.setText(String.valueOf(selected_tour.total_time));
             mCommentEdit.setText(selected_tour.comment);
             mIslocal.setChecked(selected_tour.is_local);
+            auther_txt.setText(selected_tour.author);
 
             int index = 0;
             switch (selected_tour.area) {
@@ -165,6 +168,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     mIslocal = (CheckBox) view.findViewById(R.id.is_localcheck);
                     Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
                     ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
+                    auther_txt = (EditText) view.findViewById(R.id.auther_txt);
 
                     mRealm.beginTransaction();
                     Number maxId = mRealm.where(Tour.class).max("tour_id");
@@ -182,6 +186,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
                     tour.is_local = mIslocal.isChecked();
+                    tour.author = auther_txt.getText().toString();
                     mRealm.commitTransaction();
                     getFragmentManager().popBackStack();
                 }else {
@@ -191,6 +196,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     mIslocal = (CheckBox) view.findViewById(R.id.is_localcheck);
                     Spinner area = (Spinner) view.findViewById(R.id.newTourArea);
                     ImageView imageView = (ImageView) view.findViewById(R.id.tour_image);
+                    auther_txt = (EditText) view.findViewById(R.id.auther_txt);
 
                     mRealm.beginTransaction();
                     Tour tour = mRealm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();
@@ -204,6 +210,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
                     tour.is_local = mIslocal.isChecked();
+                    tour.author = auther_txt.getText().toString();
                     mRealm.commitTransaction();
                     getFragmentManager().popBackStack();
                 }

@@ -177,7 +177,11 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     Tour tour = mRealm.createObject(Tour.class, new Long(nextId));
                     tour.tour_title = mTitleEdit.getText().toString();
                     tour.start_time = mTimeText.getText().toString();
-                    tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
+                    if(!mTotalTimeEdit.getText().toString().equals("")) {
+                        Log.d("total_time", "null");
+                        tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
+                    }
+
                     tour.comment = mCommentEdit.getText().toString();
                     tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
@@ -198,7 +202,10 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     Tour tour = mRealm.where(Tour.class).equalTo("tour_id", tour_id).findFirst();
                     tour.tour_title = mTitleEdit.getText().toString();
                     tour.start_time = mTimeText.getText().toString();
-                    tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
+                    if(!mTotalTimeEdit.getText().toString().equals("")) {
+                        Log.d("total_time", "notnull");
+                        tour.total_time = Integer.parseInt(mTotalTimeEdit.getText().toString());
+                    }
                     tour.comment = mCommentEdit.getText().toString();
                     tour.area = area.getSelectedItem().toString();
                     tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());

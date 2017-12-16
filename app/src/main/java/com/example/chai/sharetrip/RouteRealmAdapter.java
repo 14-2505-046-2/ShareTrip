@@ -43,6 +43,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         protected ImageButton delete;
         protected ImageButton edit;
         protected Button first_route_button;
+        protected TextView link;
 
         public TripViewHolder(View itemView) {
             super(itemView);
@@ -57,6 +58,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             delete = (ImageButton) itemView.findViewById(R.id.delete);
             edit = (ImageButton) itemView.findViewById(R.id.edit);
             first_route_button = (Button) itemView.findViewById(R.id.first_route_button);
+            link = (TextView) itemView.findViewById(R.id.link_url);
         }
     }
 
@@ -126,6 +128,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
             holder.start_time.setText(route.start_time);
             holder.end_time.setText(route.end_time);
             holder.comment.setText(String.valueOf(route.comment));
+            holder.link.setText(route.link);
 
 
             if (route.flag_area) {

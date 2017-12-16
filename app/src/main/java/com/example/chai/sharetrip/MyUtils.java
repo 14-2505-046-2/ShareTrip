@@ -118,6 +118,7 @@ public class MyUtils {
         tour.total_time = o.getLong("total_time");
         tour.upload_date = o.getString("createDate");
         tour.objectId = o.getString("objectId");
+        tour.is_local = o.getBoolean("is_local");
 
         NCMBFile file = new NCMBFile(o.getString("image"));
         try {
@@ -217,7 +218,8 @@ public class MyUtils {
         obj.put("total_time", tour.total_time);
         obj.put("author", tour.author);
         obj.put("comment", tour.comment);
-        obj.put("area", "宇部市");
+        obj.put("area", tour.area);
+        obj.put("is_local", tour.is_local);
         obj.put("flag_route", false);
         obj.put("image", "");
         obj.put("is_test", is_test);

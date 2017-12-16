@@ -96,7 +96,6 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
             mIslocal.setChecked(selected_tour.is_local);
 
             int index = 0;
-            Log.e("eeeeeee", selected_tour.area);
             switch (selected_tour.area) {
                 case "下関市":
                     index = 1;

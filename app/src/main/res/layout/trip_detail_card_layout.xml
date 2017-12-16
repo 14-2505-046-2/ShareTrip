@@ -158,11 +158,11 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:text="mean"
                 app:layout_constraintBottom_toTopOf="@+id/end_time"
                 app:layout_constraintLeft_toLeftOf="@+id/end_time"
                 app:layout_constraintRight_toLeftOf="@+id/name"
-                app:layout_constraintTop_toBottomOf="@+id/start_time" />
+                app:layout_constraintTop_toBottomOf="@+id/start_time"
+                tools:text="mean" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

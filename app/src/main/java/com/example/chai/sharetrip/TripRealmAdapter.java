@@ -44,6 +44,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         protected ImageView photo;
         protected ImageButton delete;
         protected ImageButton edit;
+        protected TextView is_local;
 
         public TripViewHolder(View itemView) {
             super(itemView);
@@ -55,6 +56,7 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
             photo = (ImageView) itemView.findViewById(R.id.trip_photo);
             delete = (ImageButton) itemView.findViewById(R.id.delete);
             edit = (ImageButton) itemView.findViewById(R.id.edit);
+            is_local = (TextView) itemView.findViewById(R.id.is_local);
         }
     }
 
@@ -140,7 +142,12 @@ public class TripRealmAdapter extends RealmRecyclerViewAdapter<Tour,TripRealmAda
         holder.uploadDate.setText(tour.upload_date);
         holder.start.setText(tour.start_time);
         holder.total.setText(String.valueOf(tour.total_time) + "時間");
-
+        if(tour.is_local) {
+            holder.is_local.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.is_local.setVisibility(View.GONE);
+        }
         if(tour.image != null && tour.image.length != 0) {
             /*
             Uri uri = Uri.parse(tour.image);

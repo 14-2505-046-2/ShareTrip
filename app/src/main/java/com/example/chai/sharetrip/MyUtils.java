@@ -266,7 +266,7 @@ public class MyUtils {
             obj_route.put("is_test", is_test);
             if(route.flag_area) {
                 obj_route.put("name", route.name);
-                obj_route.put("link", "");
+                obj_route.put("link", route.link);
             }
             else {
                 obj_route.put("means", route.means);

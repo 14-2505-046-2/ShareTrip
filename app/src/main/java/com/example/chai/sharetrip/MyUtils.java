@@ -29,7 +29,7 @@ import io.realm.RealmResults;
 
 public class MyUtils {
     public static ArrayList<Long> list = new ArrayList<Long>();
-    public static boolean is_test = true;//テストの間はtrueで。（upload用)
+    public static boolean is_test = false;//テストの間はtrueで。（upload用)
     public static final long ADDROUTE = -1;
     //public static final int LIMIT = 10;
 
@@ -361,37 +361,40 @@ public class MyUtils {
     public static Bitmap resize(Bitmap bitmap) {
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
-        int newWidth = 200;
-        int newHeight = 200;
-        if(w>h) {
-            newWidth = w*newHeight/h;
-        }else {
-            newHeight = h*newWidth/w;
+        if (!(w == 200 || h == 200)) {
+            int newWidth = 200;
+            int newHeight = 200;
+            if (w > h) {
+                newWidth = w * newHeight / h;
+            } else {
+                newHeight = h * newWidth / w;
+            }
+
+            if (bitmap == null) {
+                return null;
+            }
+
+            int oldWidth = bitmap.getWidth();
+            int oldHeight = bitmap.getHeight();
+
+            if (oldWidth < newWidth && oldHeight < newHeight) {
+                // 縦も横も指定サイズより小さい場合は何もしない
+                return bitmap;
+            }
+
+            float scaleWidth = ((float) newWidth) / oldWidth;
+            float scaleHeight = ((float) newHeight) / oldHeight;
+            float scaleFactor = Math.min(scaleWidth, scaleHeight);
+
+            Matrix scale = new Matrix();
+            scale.postScale(scaleFactor, scaleFactor);
+
+            Bitmap resizeBitmap = Bitmap.createBitmap(bitmap, 0, 0, oldWidth, oldHeight, scale, false);
+            bitmap.recycle();
+
+            return resizeBitmap;
+
         }
-
-        if (bitmap == null) {
-            return null;
-        }
-
-        int oldWidth = bitmap.getWidth();
-        int oldHeight = bitmap.getHeight();
-
-        if (oldWidth < newWidth && oldHeight < newHeight) {
-            // 縦も横も指定サイズより小さい場合は何もしない
-            return bitmap;
-        }
-
-        float scaleWidth = ((float) newWidth) / oldWidth;
-        float scaleHeight = ((float) newHeight) / oldHeight;
-        float scaleFactor = Math.min(scaleWidth, scaleHeight);
-
-        Matrix scale = new Matrix();
-        scale.postScale(scaleFactor, scaleFactor);
-
-        Bitmap resizeBitmap = Bitmap.createBitmap(bitmap, 0, 0, oldWidth, oldHeight, scale, false);
-        bitmap.recycle();
-
-        return resizeBitmap;
-
+        return bitmap;
     }
 }

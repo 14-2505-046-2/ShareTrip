@@ -78,8 +78,9 @@ public class TripListFragment extends Fragment {
             //RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
             TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
             recyclerView.setAdapter(adapter);
+            Toast.makeText(getContext(), "ツアーを取得しました。", Toast.LENGTH_SHORT).show();
         } catch (NCMBException e) {
-            Toast.makeText(getContext(), "オフラインです", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "インターネットに接続できません。", Toast.LENGTH_SHORT).show();
             RealmQuery<Tour> tours_queue = mRealm.where(Tour.class).notEqualTo("objectId", "local_data");
             RealmResults<Tour> tours = tours_queue.findAll();
             tours = tours.sort("tour_id", Sort.DESCENDING);

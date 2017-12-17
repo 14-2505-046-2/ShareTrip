@@ -190,7 +190,6 @@
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="50dp"
                 android:autoLink="web"
-                android:text="URL"
                 app:layout_constraintBottom_toBottomOf="@+id/name"
                 app:layout_constraintLeft_toLeftOf="@+id/name"
                 app:layout_constraintRight_toRightOf="@+id/name"

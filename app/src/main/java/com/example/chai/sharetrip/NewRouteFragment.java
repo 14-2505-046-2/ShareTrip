@@ -219,7 +219,7 @@ public class NewRouteFragment extends Fragment implements View.OnClickListener {
 
                 route.flag_area = true;
                 route.name = name.getText().toString();
-                route.image = MyUtils.getByteFromImage(((BitmapDrawable)image.getDrawable()).getBitmap());
+                route.image = MyUtils.getByteFromImage(MyUtils.resize(((BitmapDrawable)image.getDrawable()).getBitmap()));
                 route.link = link.getText().toString();
                 route.comment = comment.getText().toString();
             }

@@ -184,7 +184,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
 
                     tour.comment = mCommentEdit.getText().toString();
                     tour.area = area.getSelectedItem().toString();
-                    tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    tour.image = MyUtils.getByteFromImage(MyUtils.resize((((BitmapDrawable) imageView.getDrawable()).getBitmap())));
                     tour.is_local = mIslocal.isChecked();
                     tour.author = auther_txt.getText().toString();
                     mRealm.commitTransaction();
@@ -208,7 +208,7 @@ public class NewTourFragment extends Fragment /*implements View.OnClickListener*
                     }
                     tour.comment = mCommentEdit.getText().toString();
                     tour.area = area.getSelectedItem().toString();
-                    tour.image = MyUtils.getByteFromImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+                    tour.image = MyUtils.getByteFromImage(MyUtils.resize(((BitmapDrawable) imageView.getDrawable()).getBitmap()));
                     tour.is_local = mIslocal.isChecked();
                     tour.author = auther_txt.getText().toString();
                     mRealm.commitTransaction();

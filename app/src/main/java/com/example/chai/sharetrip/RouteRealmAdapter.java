@@ -67,8 +67,7 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         this.context = context;
         if(!data.isEmpty()) {
             this.first_route = data.first();
-            //gmmIntentUri = Uri.parse("geo:latitude,longitude?q=" + this.first_route.name);
-            gmmIntentUri = Uri.parse("geo:0,0?q=" + this.first_route.name);
+            gmmIntentUri = Uri.parse("google.navigation:q=" + this.first_route.name);
         }
     }
 
@@ -112,16 +111,9 @@ public class RouteRealmAdapter extends RealmRecyclerViewAdapter<Route, RouteReal
         holder.first_route_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                //mapIntent.setPackage("com.google.android.apps.maps");
-                //context.startActivity(mapIntent);
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                String destination = "萩";
-
-                intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity");
-                intent.setData(Uri.parse("http://maps.google.com/maps?saddr=0,0&daddr="+destination+"&dirflg=w"));
-                context.startActivity(intent);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                context.startActivity(mapIntent);
             }
         });
 

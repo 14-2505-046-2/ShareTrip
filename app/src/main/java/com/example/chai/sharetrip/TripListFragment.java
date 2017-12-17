@@ -13,10 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nifty.cloud.mb.core.NCMBException;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -58,6 +61,7 @@ public class TripListFragment extends Fragment {
         time = bundle.getLong("time", 0);
         area = bundle.getString("area", "全て");
 
+        View v_main = inflater.inflate(R.layout.activity_main, container, false);
         View v = inflater.inflate(R.layout.fragment_trip_list, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -68,11 +72,19 @@ public class TripListFragment extends Fragment {
         Log.d("tour_id", tour_id);
         try {
             RealmResults<Tour> tours = MyUtils.getAllObjectId(tour_id, area, time);
-            tours = tours.sort("tour_id", Sort.DESCENDING);
+            if(tours != null) {
+                tours = tours.sort("tour_id", Sort.DESCENDING);
+            }
             //RealmResults<Tour> tours = mRealm.where(Tour.class).findAll();
             TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
             recyclerView.setAdapter(adapter);
         } catch (NCMBException e) {
+            Toast.makeText(getContext(), "オフラインです", Toast.LENGTH_SHORT).show();
+            RealmQuery<Tour> tours_queue = mRealm.where(Tour.class).notEqualTo("objectId", "local_data");
+            RealmResults<Tour> tours = tours_queue.findAll();
+            tours = tours.sort("tour_id", Sort.DESCENDING);
+            TripRealmAdapter adapter = new TripRealmAdapter(getActivity(), tours, true);
+            recyclerView.setAdapter(adapter);
             Log.e("getTour", "ERR");
         }
         return v;
